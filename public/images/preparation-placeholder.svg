@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="850" viewBox="0 0 1200 850" role="img" aria-labelledby="title desc">
+  <title id="title">Quy trình chế biến — ảnh placeholder</title>
+  <desc id="desc">Hình minh họa tạm thời, không phải ảnh món ăn hoặc cửa hàng thực tế.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#FBF8F0"/>
+      <stop offset="1" stop-color="#EFE5D2"/>
+    </linearGradient>
+    <radialGradient id="plate" cx="50%" cy="42%" r="62%">
+      <stop offset="0" stop-color="#FFFFFF"/>
+      <stop offset="1" stop-color="#E7E0D4"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="850" fill="url(#bg)"/>
+  <circle cx="600" cy="365" r="258" fill="#315B45" opacity=".07"/>
+  <ellipse cx="600" cy="390" rx="270" ry="205" fill="#315B45" opacity=".10"/>
+  <ellipse cx="600" cy="365" rx="260" ry="195" fill="url(#plate)" stroke="#D8CDBA" stroke-width="9"/>
+  <ellipse cx="600" cy="365" rx="205" ry="145" fill="none" stroke="#D5A13D" stroke-width="4" stroke-dasharray="8 13" opacity=".75"/>
+  <path d="M475 360c35-90 170-100 245-25 43 43 20 102-33 119-70 24-181-10-212-57-12-17-11-27 0-37Z" fill="#F4E7CA" stroke="#D9C59C" stroke-width="8"/>
+  <path d="M500 338c42-50 125-59 180-20M485 380c66 47 152 48 216 8M530 415c55 19 105 17 153-4" fill="none" stroke="#FFFFFF" stroke-width="18" stroke-linecap="round" opacity=".95"/>
+  <g fill="#D5A13D" opacity=".95"><circle cx="490" cy="325" r="8"/><circle cx="710" cy="345" r="7"/><circle cx="670" cy="430" r="9"/><circle cx="535" cy="438" r="6"/></g>
+  <g fill="#315B45" opacity=".8"><path d="M560 285c-13-30 6-48 28-52 4 24-5 42-28 52Z"/><path d="M635 292c5-27 28-36 48-27-8 22-25 32-48 27Z"/><path d="M700 392c21-18 42-12 51 5-19 14-37 12-51-5Z"/></g>
+  <path d="M585 170c-22-34 22-48 2-82M635 170c-22-34 22-48 2-82" fill="none" stroke="#A94332" stroke-width="8" stroke-linecap="round" opacity=".45"/>
+  <rect x="90" y="680" width="1020" height="105" rx="26" fill="#FFFFFF" opacity=".88" stroke="#D8CDBA" stroke-width="2"/>
+  <text x="600" y="724" text-anchor="middle" font-family="Arial, sans-serif" font-size="28" font-weight="700" letter-spacing="3" fill="#315B45">ẢNH CHẾ BIẾN</text>
+  <text x="600" y="760" text-anchor="middle" font-family="Arial, sans-serif" font-size="21" fill="#73756C">Thay bằng ảnh thực tế được duyệt</text>
+  <text x="600" y="70" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" font-weight="700" letter-spacing="2" fill="#A94332">HÌNH MINH HỌA TẠM THỜI · KHÔNG PHẢI ẢNH THẬT</text>
+</svg>
