@@ -28,6 +28,10 @@ The first release is a public static React site with local menu data and links t
 - Run `npm audit` and inspect findings. Do not blindly force breaking updates.
 - Avoid third-party widgets or tracking scripts unless justified and reviewed.
 - **Font self-hosting**: Be Vietnam Pro is self-hosted in `public/fonts/` (SIL OFL 1.1). This eliminates third-party requests to Google Fonts and eliminates external font tracking risks.
+- **Zalo icon asset & licensing**: The official Zalo icon is downloaded locally to `public/icons/zalo.png` (source: `https://img.icons8.com/color/48/zalo.png`).
+  - *Privacy & Performance*: Local hosting avoids external image requests to third-party CDNs, prevents visitor IP exposure, and avoids expanding the CSP `img-src` policy. If an external fallback is used, `https://img.icons8.com` must be added to `img-src`.
+  - *License compliance*: Used under Icons8 terms with attribution recorded in project documentation.
+  - *Integrity & Verification*: `zaloUrl` remains `null` until confirmed by the owner; zero placeholder or non-functional links are rendered to prevent user frustration or phishing vector risks.
 - **Google Maps iframe embed**: The site embeds an official Google Maps iframe for location preview.
   - *Privacy implications*: As a third-party resource loaded from Google servers, the iframe may set Google cookies and process visitor metadata (IP address, user agent).
   - *Controls & Mitigations*:
@@ -69,6 +73,9 @@ Run only scripts actually defined in `package.json`. Document any missing script
 
 ## 4. Residual risks
 
+- **Google Maps & Address Discrepancy Risk**: The existing Google Maps listing displays an outdated address (`315 Lã Xuân Oai`), while the verified physical address is `353D Lã Xuân Oai, P. Long Phước`.
+  - *Risk*: Customers following navigation could arrive at an incorrect property if the pin is misaligned.
+  - *Mitigation*: The website exclusively displays the confirmed physical address (353D); never displays 315 as the current address; does not publish fabricated geographic coordinates; and requires the owner to update the Google Business Profile address from 315 to 353D and verify the storefront pin.
 - An incorrect Maps URL can send customers to the wrong place; keep the exact URL supplied by the owner (`https://maps.app.goo.gl/RoiN2qYnvUcMYCFQ6`). Verify Zalo/Facebook destinations before enabling those actions.
 - Hosting-level security headers depend on the selected platform and deployment config.
 - The site still relies on the security of its static host, DNS/domain account, and dependency supply chain.

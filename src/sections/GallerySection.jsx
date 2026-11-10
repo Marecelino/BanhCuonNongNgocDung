@@ -8,21 +8,25 @@ export function GallerySection() {
       id: 'gallery-banh-cuon',
       src: restaurant.images.banhCuon,
       label: 'Bánh cuốn / bánh ướt nóng',
+      alt: 'Đĩa bánh cuốn nóng tráng tại chỗ kèm chả lụa, nem rán và hành phi',
     },
     {
       id: 'gallery-bun-cha',
       src: restaurant.images.bunCha,
       label: 'Bún chả Hà Nội',
+      alt: 'Mẹt bún chả Hà Nội nướng than hoa thơm lừng và bún tươi',
     },
     {
       id: 'gallery-bun-moc',
       src: restaurant.images.bunMoc,
-      label: 'Bún mọc sườn non & chả',
+      label: 'Bún mọc chả củ cải trắng',
+      alt: 'Tô bún mọc củ cải trắng nóng hổi với mọc viên giòn dai',
     },
     {
       id: 'gallery-shop-front',
       src: restaurant.images.shopFront,
       label: 'Không gian đón khách',
+      alt: 'Không gian đón khách thoáng mát tại quán Bánh Cuốn Nóng Ngọc Dung',
     },
   ];
 
@@ -42,11 +46,11 @@ export function GallerySection() {
               <div className="gallery-card__image-frame">
                 <img
                   src={item.src}
-                  alt=""
+                  alt={item.alt}
                   width="400"
                   height="300"
                   loading="lazy"
-                  data-placeholder="true"
+                  decoding="async"
                   className="gallery-card__image"
                 />
               </div>

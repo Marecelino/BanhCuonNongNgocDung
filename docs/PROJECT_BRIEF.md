@@ -33,19 +33,34 @@ Do not infer quantity, serving size, toppings, ingredients, or bundle details no
 ## 4. Confirmed business identity, contact and location
 
 - Official display name: `Bánh Cuốn Nóng Ngọc Dung`
+- Official physical address: `353D, đường Lã Xuân Oai, phường Long Phước, Thành phố Hồ Chí Minh.`
+  - Street address: `353D, đường Lã Xuân Oai`
+  - Ward / Locality: `Phường Long Phước`
+  - Region / City: `Thành phố Hồ Chí Minh`
+  - Country: `VN`
 - Phone display: `0388 506 360`
 - Phone link: `tel:0388506360`
 - Opening time range supplied by the owner: `05:00–10:30` (5:00 AM to 10:30 AM). Days of operation have not been specified; do not imply that the shop opens every day.
 - Owner-provided Google Maps link: `https://maps.app.goo.gl/RoiN2qYnvUcMYCFQ6`
-- Use the Maps link exactly as supplied as the location/directions destination. The short link has not been used to infer or print a street address; the full postal address remains unknown.
+- **Important Google Maps listing discrepancy**:
+  - The existing Google Maps listing currently shows an outdated address: `315, đường Lã Xuân Oai, phường Long Phước, Thành phố Hồ Chí Minh`.
+  - The confirmed physical address of the restaurant is **353D**, not 315.
+  - **Rules**:
+    - Never display 315 as the current physical address anywhere on the website.
+    - Do not overwrite the confirmed 353D address with the outdated Maps listing address.
+    - Do not create a duplicate or second business listing.
+    - Record 315 only as historical/stale listing metadata.
+    - Retain the supplied Maps URL and embedded iframe temporarily, pending owner verification of the map pin and location.
+    - Do not generate a fabricated replacement iframe URL.
+  - **Pending Owner Action**: The restaurant owner must update the Google Business Profile address from 315 to 353D and verify the map pin location. Once verified, update the website's map data with the confirmed URLs.
 - Proposed Zalo link: `https://zalo.me/0388506360` — verify that the number is registered and the link opens the intended business account before production.
 
 ## 5. Missing facts — must not be invented
 
 - Logo / official brand artwork (the brand name itself is confirmed; use a typographic wordmark temporarily).
-- Full street address (Maps link is supplied, but no verified postal address has been supplied in text).
-- Days of operation / weekly schedule.
+- Days of operation / weekly schedule (confirmed hours are 05:00–10:30, but days remain unspecified).
 - Facebook page URL.
+- Geographic coordinates (latitude/longitude) must not be fabricated; add only after validating actual business storefront pin.
 - Whether the shop offers pickup/delivery, shipping, table seating, or pre-orders.
 - Real photos of dishes, shop front, preparation area, and dining space. Temporary local placeholders are included and must be replaced before launch.
 - Any awards, years of operation, customer reviews, special ingredients, or quality claims.

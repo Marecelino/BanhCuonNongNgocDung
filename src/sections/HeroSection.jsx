@@ -10,7 +10,7 @@ export function HeroSection({ heroRef }) {
         <div className="hero-section__content">
           {/* 1. Eyebrow */}
           <div className="hero-section__eyebrow-wrap">
-            <span className="hero-section__eyebrow">Bữa Sáng Việt</span>
+            <span className="hero-section__eyebrow">Điểm Tâm Sáng Long Phước</span>
           </div>
 
           {/* 2. Main Title */}
@@ -60,6 +60,7 @@ export function HeroSection({ heroRef }) {
               width="600"
               height="450"
               loading="eager"
+              decoding="async"
               data-placeholder="true"
               className="hero-section__image"
             />

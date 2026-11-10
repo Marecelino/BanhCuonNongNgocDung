@@ -2,12 +2,13 @@ import { useState, useEffect } from 'react';
 import { ButtonLink } from '../components/ButtonLink';
 import { restaurant } from '../data/restaurant';
 
-export function ContactDock({ heroRef, contactRef }) {
+export function ContactDock({ heroRef, contactRef, isVisible }) {
   const [isHeroVisible, setIsHeroVisible] = useState(true);
   const [isContactVisible, setIsContactVisible] = useState(false);
 
   useEffect(() => {
-    // Only run on clients that support IntersectionObserver
+    // If isVisible is explicitly passed by parent, skip local observers
+    if (isVisible !== undefined) return;
     if (!('IntersectionObserver' in window)) return;
 
     let heroObserver;
@@ -40,10 +41,10 @@ export function ContactDock({ heroRef, contactRef }) {
       if (heroObserver && heroEl) heroObserver.unobserve(heroEl);
       if (contactObserver && contactEl) contactObserver.unobserve(contactEl);
     };
-  }, [heroRef, contactRef]);
+  }, [heroRef, contactRef, isVisible]);
 
   // Dock is visible only when scrolled past Hero and not yet in Contact section
-  const isDockVisible = !isHeroVisible && !isContactVisible;
+  const isDockVisible = isVisible !== undefined ? isVisible : (!isHeroVisible && !isContactVisible);
 
   return (
     <aside
@@ -82,4 +83,3 @@ export function ContactDock({ heroRef, contactRef }) {
     </aside>
   );
 }
-

@@ -8,11 +8,11 @@ Research snapshot: 10 November 2026. This is a directional market/design benchma
 |---|---|---|
 | Food-first hero | Restaurant examples lead with large food photography rather than a logo-only banner. | Hero should show one real, appetizing bánh cuốn or bún dish; brand mark supports but does not dominate. |
 | Menu in real text | Current restaurant guidance recommends crawlable menu content with visible categories/prices rather than PDF-only or image-only menus. | Build menu from local data and HTML text; use photos selectively, not for every row. |
-| Quick actions on phone | Restaurant/café pages emphasize tap-to-call, location, hours, menu and direct order actions. | Put phone and owner-provided Maps actions in the first screen or a compact sticky mobile bar; display confirmed hours `05:00–10:30`, but do not invent operating days or postal address. |
+| Quick actions on phone | Restaurant/café pages emphasize tap-to-call, location, hours, menu and direct order actions. | Put phone, verified address (353D Lã Xuân Oai, Long Phước), and owner-provided Maps actions in the first screen or a compact sticky mobile bar; display confirmed hours `05:00–10:30`, and avoid displaying the outdated 315 address. |
 | Photo consistency | Guidance emphasizes a coherent lighting/surface/angle style and warns that stock food photos can mislead diners. | Plan a compact photo shoot with consistent light, neutral ceramic plates, close dish detail and real storefront. |
 | Minimal navigation | Restaurant homepage navigation should prioritize menu, ordering/reservation and location. | One-page anchors: Menu, Câu chuyện, Hình ảnh, Liên hệ. Do not create a large nav. |
 | Mobile readability | Industry guidance calls for quick menu access, large actions and fast-loading images on mobile. | Single-column menu, clear aligned prices, no tiny text/PDF, no hover-dependent content. |
-| Local trust | Phone, address, location, opening hours and accurate business details help visitors decide. | Use the owner-provided Maps link and opening time `05:00–10:30`; do not print an unverified street address or infer operating days. |
+| Local trust | Phone, address, location, opening hours and accurate business details help visitors decide. | Display the confirmed physical address (`353D, đường Lã Xuân Oai, phường Long Phước, Thành phố Hồ Chí Minh`), owner-provided Maps link, and opening time `05:00–10:30`; explicitly manage the discrepancy with the outdated 315 address on the current Google Maps listing. |
 
 ## 2. Visual references observed
 
@@ -36,7 +36,7 @@ Dribbble/Behance pieces are visual inspiration, not proof of usability or conver
 
 1. Put a real food photograph, clear restaurant identity, a short food proposition, and a primary action in the initial viewport.
 2. Keep the menu in HTML text with item names and prices; do not make a PDF or poster image the only menu source.
-3. Make phone and address true actionable links; map/directions should open the correct location.
+3. Make phone and verified physical address (353D, đường Lã Xuân Oai, phường Long Phước) true actionable elements; map/directions should guide customers accurately without confusing them with the outdated 315 Maps address.
 4. For a breakfast shop, opening hours are particularly important because customers may check very early. This shop has supplied `05:00–10:30`; the days of operation are still unknown.
 5. Use a limited set of high-quality, authentic photos rather than many small thumbnails.
 6. Test the real menu names and actual phone on a narrow device; long dish names must not collide with prices.

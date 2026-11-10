@@ -14,8 +14,14 @@
 - [ ] Opening time is displayed as `05:00–10:30` without claiming daily operation.
 - [ ] Google Maps iframe embed is included in Contact & Location using exact owner-supplied embed URL.
 - [ ] External “Chỉ đường” navigation link is retained and opens exact owner-provided Maps URL: `https://maps.app.goo.gl/RoiN2qYnvUcMYCFQ6`.
-- [ ] Do not print an unverified full postal address.
+- [ ] All public website address text displays `353D, đường Lã Xuân Oai, phường Long Phước, Thành phố Hồ Chí Minh`.
+- [ ] No public website content displays 315 as the current physical address.
+- [ ] Local SEO primary location is Phường Long Phước; legacy Long Trường primary-location assumptions are removed.
+- [ ] JSON-LD structured data uses confirmed 353D address without fabricated geographic coordinates.
+- [ ] Google Maps pin and embed iframe location verified against the physical storefront (pending owner GBP update from 315 to 353D).
 - [ ] Unverified Zalo and Facebook actions are safely hidden (no dead or placeholder buttons).
+- [ ] Floating Zalo button renders conditionally ONLY when `restaurant.zaloUrl` is non-null. When null, button is completely unrendered (zero non-functional buttons).
+- [ ] Once verified, Zalo button links to `https://zalo.me/0388506360` (or owner-confirmed destination) with `rel="noopener noreferrer" target="_blank"`.
 - [ ] StorySection is omitted in V1; no public messages like "Thông tin sắp cập nhật".
 - [ ] No fake reviews, ratings, awards, food claims or promotions.
 
@@ -32,6 +38,9 @@
 - [ ] Mobile sticky contact dock visibility is driven by `IntersectionObserver` (hidden on Hero, visible past Hero, hidden on Contact).
 - [ ] Mobile sticky contact dock respects `env(safe-area-inset-bottom)` and `<main>` has padding-bottom compensation to prevent obscuring content.
 - [ ] ContactDock external Google Maps directions action remains functional and independent.
+- [ ] Floating Zalo button uses exact official asset `public/icons/zalo.png` (`https://img.icons8.com/color/48/zalo.png`), preserving original brand colors, un-distorted 48×48 aspect ratio, and circular 56–64px touch area with subtle shadow.
+- [ ] Floating Zalo button sits fixed bottom-right (24px) on desktop with "Chat Zalo" tooltip.
+- [ ] Floating Zalo button sits fixed bottom-right (16px) on mobile, positioned safely ABOVE `ContactDock` with safe-area support, never overlapping dock buttons.
 - [ ] Tablet and desktop layouts use available width gracefully without over-stretching text lines.
 - [ ] No layout shift (CLS < 0.1) caused by map or images without dimensions/aspect ratios.
 
@@ -39,7 +48,7 @@
 - [ ] Semantic landmarks (`<header>`, `<nav>`, `<main>`, `<section>`, `<footer>`) and heading hierarchy (`<h1>` to `<h3>`).
 - [ ] Keyboard navigation and visible focus rings on all interactive elements.
 - [ ] Mobile menu button has `aria-expanded`, `aria-controls="mobile-nav"`, and closes on `Escape`.
-- [ ] Links and buttons have meaningful accessible names.
+- [ ] Links and buttons have meaningful accessible names (e.g., Floating Zalo has `aria-label="Nhắn tin qua Zalo"`).
 - [ ] Google Maps iframe has descriptive `title="Bản đồ vị trí Bánh Cuốn Nóng Ngọc Dung"`.
 - [ ] External directions link is reachable and operable via keyboard without interacting with the iframe.
 - [ ] Placeholder images have `alt=""` (empty = decorative) and `data-placeholder="true"`.
@@ -78,6 +87,19 @@
 - [ ] `npm run lint` passes with 0 errors.
 - [ ] `npm run build` succeeds cleanly.
 - [ ] Hosting CSP configured with `font-src 'self'`.
+
+## Food image assets & responsive media (Phase V1.2)
+- [x] All 6 original owner-provided files (`Bánh cuốn ký.png`, `Bánh cuốn.png`, `BÚN CHẢ HÀ NỘI.png`, `Bún mọc chả.png`, `Bún mọc sườn non.png`, `Bún thịt nướng.png`) are preserved unchanged in `public/images/menu/`.
+- [x] Production files use clean ASCII kebab-case: `banh-cuon-nong`, `bun-cha-ha-noi`, `bun-moc-cha-cu-cai-trang`, `bun-moc-suon-non`, `banh-cuon-ky`, `bun-thit-nuong`.
+- [x] WebP assets generated with high quality (86) and thumbnails (480w) for mobile data savings.
+- [x] `Bún mọc sườn non.png` is verified clean of third-party watermarks (no "Nhamtran FV" text), commercially legal.
+- [x] `BÚN CHẢ HÀ NỘI.png` is served at native resolution ($474 \times 355$) without artificial upscaling.
+- [x] `Bún thịt nướng.png` is stored safely but **strictly hidden** from the active menu (not in confirmed 7 items).
+- [x] `Bánh ướt ký` and `Chả thêm` have no fabricated photos; rendered as clean, accessible text rows.
+- [x] **Rule 8 strictly enforced**: Hero Banner preserves `public/images/hero-food-placeholder.svg` with `data-placeholder="true"`, awaiting separate dedicated hero banner.
+- [x] Menu cards use unified 4:3 aspect ratio (`aspect-ratio: 4 / 3; width: 100%`) and `object-fit: cover`.
+- [x] Zero layout shift (CLS = 0) during image loading via explicit intrinsic `width="600" height="450"`.
+- [x] Responsive `picture` element serves `480w` WebP on mobile viewports (< 640px) and `1200w` on desktop.
 
 ## Release gate
 Do not mark complete while any business-critical contact link is broken, a menu price is unverified, any temporary image placeholder remains in production without owner approval, or a required build check fails.

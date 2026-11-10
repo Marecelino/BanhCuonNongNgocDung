@@ -11,7 +11,7 @@ export function ContactSection({ contactRef }) {
         <SectionHeading
           eyebrow="Địa điểm &amp; Liên hệ"
           title="Đến với Bánh Cuốn Nóng Ngọc Dung"
-          subtitle="Ghé quán thưởng thức bữa sáng nóng hổi."
+          subtitle="Ghé quán thưởng thức bữa sáng nóng hổi tại Long Phước."
           align="center"
         />
 
@@ -19,6 +19,23 @@ export function ContactSection({ contactRef }) {
           {/* Cột thông tin liên hệ */}
           <div className="contact-section__info">
             <div className="contact-info-card">
+              {/* Địa chỉ quán */}
+              <div className="contact-info-item">
+                <div className="contact-info-item__icon" aria-hidden="true">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                    <circle cx="12" cy="10" r="3" />
+                  </svg>
+                </div>
+                <div className="contact-info-item__content">
+                  <span className="contact-info-item__label">Địa chỉ quán</span>
+                  <strong className="contact-info-item__value contact-info-item__value--address">
+                    {restaurant.address.formatted}
+                  </strong>
+
+                </div>
+              </div>
+
               {/* Giờ mở cửa */}
               <div className="contact-info-item">
                 <div className="contact-info-item__icon" aria-hidden="true">
@@ -30,9 +47,7 @@ export function ContactSection({ contactRef }) {
                 <div className="contact-info-item__content">
                   <span className="contact-info-item__label">Giờ phục vụ</span>
                   <strong className="contact-info-item__value">Mở cửa: {restaurant.openingHoursDisplay}</strong>
-                  <p className="contact-info-item__desc">
-                    Phục vụ bữa sáng nóng hổi tại chỗ hoặc gói mang về nhanh chóng.
-                  </p>
+
                 </div>
               </div>
 
@@ -46,9 +61,7 @@ export function ContactSection({ contactRef }) {
                 <div className="contact-info-item__content">
                   <span className="contact-info-item__label">Hotline đặt món</span>
                   <strong className="contact-info-item__value">{restaurant.phoneDisplay}</strong>
-                  <p className="contact-info-item__desc">
-                    Bấm gọi trực tiếp để đặt món trước hoặc đặt bánh cuốn số lượng nhiều.
-                  </p>
+
                 </div>
               </div>
             </div>

@@ -24,7 +24,7 @@ export const menuGroups = [
     id: "mon-them",
     title: "Món thêm",
     items: [
-      { id: "cha-them", name: "Chả thêm", price: 3000, unit: "1 miếng" },
+      { id: "cha-them", name: "Chả thêm(chả - thịt viên - chả giò)", price: 3000, unit: "1 miếng" },
     ],
   },
 ];

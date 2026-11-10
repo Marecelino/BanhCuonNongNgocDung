@@ -5,8 +5,9 @@ Implement the restaurant landing page only after the user approves `docs/UI_UX_D
 ## Before coding
 - Inspect current source and package scripts.
 - Read `AGENTS.md`, all applicable `.agents/rules/`, all relevant `.agents/skills/`, and the approved design plan.
-- Use confirmed brand name `Bánh Cuốn Nóng Ngọc Dung`, phone `0388506360` (display `0388 506 360`), opening time range `05:00–10:30`, owner-provided Maps navigation URL `https://maps.app.goo.gl/RoiN2qYnvUcMYCFQ6`, and exact owner-provided Google Maps embed URL `https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d3918.8526469330914!2d106.8060858!3d10.8225865!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x317527df79abcf83%3A0xaf357b8eaed3c21e!2sQuan%20ngoc%20dung!5e0!3m2!1svi!2s!4v1794295463121!5m2!1svi!2s`. Do not ask again for these details.
-- Do not block implementation on missing non-critical data; keep full postal address/days/social details as null and safely hide unverified actions.
+- Use confirmed brand name `Bánh Cuốn Nóng Ngọc Dung`, phone `0388506360` (display `0388 506 360`), confirmed physical address `353D, đường Lã Xuân Oai, phường Long Phước, Thành phố Hồ Chí Minh`, opening time range `05:00–10:30`, owner-provided Maps navigation URL `https://maps.app.goo.gl/RoiN2qYnvUcMYCFQ6`, and exact owner-provided Google Maps embed URL `https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d3918.8526469330914!2d106.8060858!3d10.8225865!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x317527df79abcf83%3A0xaf357b8eaed3c21e!2sQuan%20ngoc%20dung!5e0!3m2!1svi!2s!4v1794295463121!5m2!1svi!2s`. Do not ask again for these details.
+- **Important address rule**: The current Google Maps listing displays an outdated address (`315 Lã Xuân Oai`). Never display 315 as the physical address on the website. Always use the owner-confirmed address `353D, đường Lã Xuân Oai, phường Long Phước, Thành phố Hồ Chí Minh`.
+- Do not block implementation on missing non-critical data; keep days/social details as null and safely hide unverified actions.
 - Omit StorySection from V1; do not display placeholder messages like "Thông tin sắp cập nhật".
 - Use the included image placeholders in `public/images/` until the owner replaces them. Mark them with `data-placeholder="true"` and `alt=""`.
 
@@ -44,12 +45,21 @@ Implement the restaurant landing page only after the user approves `docs/UI_UX_D
   - No `padding-top` offset hack (sticky header is in document flow).
 - Verification: `npm run lint` + `npm run build` must pass.
 
-### Phase 4 — Menu Section
+### Phase 4 — Menu Section & Food Image Presentation
+- Create `src/components/MenuDishCard.jsx`:
+  - 4:3 dish cards with `<picture>` element (WebP with PNG fallback).
+  - Responsive `srcset` (480w thumbnail and 1200w master) for mobile data savings.
+  - Tabular prices in VND (`formatVnd`), dish description, accessible Vietnamese alt text.
+  - Status handling (`imageStatus: "owner-photo"` vs placeholder).
 - Create `src/components/MenuItemRow.jsx`:
-  - Tabular numbers, aligned price column, safe wrapping for long names like "Bún mọc chả củ cải trắng".
+  - Tabular numbers, aligned price column, safe wrapping for text-only items (`Bánh ướt ký`, `Chả thêm`).
 - Create `src/sections/MenuSection.jsx`:
-  - Render 3 groups from `src/data/menu.js`.
+  - 4 flagship hot dishes rendered with `MenuDishCard` in responsive grid (`menu-dishes-grid`).
+  - By-weight products rendered with `kilo-card` featuring 4:3 category media (`banh-cuon-ky.webp`).
+  - Accompaniments rendered with `extra-card` without fabricated imagery.
   - Exactly 7 items with confirmed names, prices, and units.
+  - **Exclusion rule**: `Bún thịt nướng` is kept safe in `public/images/menu/` but strictly excluded from the active menu.
+  - **Rule 8**: Hero banner strictly preserves `hero-food-placeholder.svg` with `data-placeholder="true"`, awaiting dedicated banner.
 - Verification: check all 7 items and prices; `npm run lint` + `npm run build` must pass.
 
 ### Phase 5 — Gallery Section
@@ -67,14 +77,23 @@ Implement the restaurant landing page only after the user approves `docs/UI_UX_D
 - Create `src/components/ContactActions.jsx` (phone call button + external directions button).
 - Create `src/sections/ContactSection.jsx`:
   - Section heading: "Đến với Bánh Cuốn Nóng Ngọc Dung", subtitle "Ghé quán thưởng thức bữa sáng nóng hổi."
-  - Desktop: 2-column layout. Left column (info, hours `05:00–10:30`, phone `0388 506 360`, call CTA, directions CTA). Right column (`GoogleMapEmbed` with 16–20px border radius, subtle border, shadow).
-  - Mobile: strict 6-step stacked order (heading → hours → phone → call CTA → 4:3 map 100% width → external directions CTA).
+  - Verified physical address displayed: `353D, đường Lã Xuân Oai, phường Long Phước, Thành phố Hồ Chí Minh` (never 315).
+  - Desktop: 2-column layout. Left column (info, address, hours `05:00–10:30`, phone `0388 506 360`, call CTA, directions CTA). Right column (`GoogleMapEmbed` with 16–20px border radius, subtle border, shadow).
+  - Mobile: strict 6-step stacked order (heading → address/hours → phone → call CTA → 4:3 map 100% width → external directions CTA).
   - Unverified Zalo/Facebook hidden.
 - Create `src/sections/ContactDock.jsx`:
   - Mobile only (< 768px).
   - Visibility controlled via native `IntersectionObserver` (hidden on Hero, visible past Hero, hidden on Contact).
   - Two buttons: "Gọi đặt món" (`tel:0388506360`) and "Chỉ đường" (`https://maps.app.goo.gl/RoiN2qYnvUcMYCFQ6`).
   - Respects `env(safe-area-inset-bottom)` with `<main>` padding-bottom compensation.
+- Create `src/components/FloatingZalo.jsx`:
+  - Conditional: renders ONLY when `restaurant.zaloUrl` is verified and non-null (renders `null` when null).
+  - Uses exact official icon `public/icons/zalo.png` (source: `https://img.icons8.com/color/48/zalo.png`).
+  - Preserves original colors and un-distorted 1:1 aspect ratio; no replacement with generic chat icons or custom drawings.
+  - Touch target 56–64px with subtle shadow.
+  - Desktop: fixed bottom-right (24px) with tooltip "Chat Zalo".
+  - Mobile: fixed bottom-right (16px), positioned safely above `ContactDock` with safe area support.
+  - Accessible name: "Nhắn tin qua Zalo" (`target="_blank" rel="noopener noreferrer"`).
 - Verification: `npm run lint` + `npm run build` must pass.
 
 ### Phase 7 — Verification & QA

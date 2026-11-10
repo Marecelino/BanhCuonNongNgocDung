@@ -16,6 +16,7 @@ export function SiteFooter() {
           <div className="site-footer__item">
             <span className="site-footer__label">Giờ phục vụ</span>
             <span className="site-footer__value">Mở cửa: {restaurant.openingHoursDisplay}</span>
+                        <span className="site-footer__value">Tất cả các ngày trong tuần</span>
           </div>
 
           <div className="site-footer__item">
@@ -26,25 +27,25 @@ export function SiteFooter() {
           </div>
 
           <div className="site-footer__item">
-            <span className="site-footer__label">Địa điểm quán</span>
+            <span className="site-footer__label">Địa chỉ quán</span>
             <a
               href={restaurant.mapUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="site-footer__link site-footer__link--map"
+              aria-label="Mở địa chỉ trên Google Maps"
             >
-              Mở trên Google Maps ↗
+              {restaurant.address.formatted} ↗
             </a>
           </div>
         </div>
 
         <div className="site-footer__bottom">
           <p className="site-footer__copyright">
-            © {new Date().getFullYear()} {restaurant.name}. Tất cả quyền được bảo lưu.
+            © {new Date().getFullYear()} {restaurant.name}. Design by Nguyễn Trọng Thứ - Marecelino.
           </p>
         </div>
       </Container>
     </footer>
   );
 }
-

@@ -1,5 +1,6 @@
 import { Container } from '../components/Container';
 import { SectionHeading } from '../components/SectionHeading';
+import { MenuDishCard } from '../components/MenuDishCard';
 import { MenuItemRow } from '../components/MenuItemRow';
 import { ButtonLink } from '../components/ButtonLink';
 import { menuGroups } from '../data/menu';
@@ -21,7 +22,7 @@ export function MenuSection() {
         />
 
         <div className="menu-section__grid">
-          {/* Main Block: Món Nóng */}
+          {/* Main Block: Món Nóng with 4 Dedicated Food Images */}
           {hotGroup && (
             <div className="menu-card menu-card--featured">
               <div className="menu-card__header">
@@ -36,43 +37,77 @@ export function MenuSection() {
                 </div>
                 <div>
                   <h3 className="menu-card__title">{hotGroup.title}</h3>
-                  <span className="menu-card__badge">Phục vụ tại chỗ &amp; mang về</span>
+                  <span className="menu-card__badge">{hotGroup.badge}</span>
                 </div>
               </div>
-              <ul className="menu-card__list">
+
+              <div className="menu-dishes-grid">
                 {hotGroup.items.map((item) => (
-                  <MenuItemRow key={item.id} item={item} />
+                  <MenuDishCard key={item.id} item={item} />
                 ))}
-              </ul>
+              </div>
             </div>
           )}
 
-          {/* Secondary 2-Col Split: Bán theo ký & Món thêm */}
+          {/* Secondary Subgrid: Bán theo ký & Món thêm */}
           <div className="menu-section__subgrid">
             {kiloGroup && (
-              <div className="menu-card">
-                <div className="menu-card__header">
-                  <div className="menu-card__header-icon" aria-hidden="true">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <rect x="2" y="7" width="20" height="14" rx="2" ry="2" />
-                      <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
-                    </svg>
-                  </div>
-                  <div>
-                    <h3 className="menu-card__title">{kiloGroup.title}</h3>
-                    <span className="menu-card__badge">Đặt trước theo ký</span>
-                  </div>
+              <div className="menu-card kilo-card">
+                <div className="kilo-card__media">
+                  <picture>
+                    <source
+                      type="image/webp"
+                      srcSet={
+                        kiloGroup.categoryImageThumb
+                          ? `${kiloGroup.categoryImageThumb} 480w, ${kiloGroup.categoryImage} 1200w`
+                          : kiloGroup.categoryImage
+                      }
+                      sizes="(max-width: 639px) 100vw, (max-width: 1023px) 50vw, 300px"
+                    />
+                    {kiloGroup.categoryImageFallback && (
+                      <source type="image/png" srcSet={kiloGroup.categoryImageFallback} />
+                    )}
+                    <img
+                      src={kiloGroup.categoryImage}
+                      alt={kiloGroup.categoryImageAlt}
+                      width="600"
+                      height="450"
+                      loading="lazy"
+                      decoding="async"
+                      className="kilo-card__image"
+                    />
+                  </picture>
+                  <span className="kilo-card__badge-note">
+                    Bánh cuốn nóng theo ký
+                  </span>
                 </div>
-                <ul className="menu-card__list">
-                  {kiloGroup.items.map((item) => (
-                    <MenuItemRow key={item.id} item={item} />
-                  ))}
-                </ul>
+                <div className="kilo-card__content">
+                  <div className="menu-card__header">
+                    <div className="menu-card__header-icon" aria-hidden="true">
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <rect x="2" y="7" width="20" height="14" rx="2" ry="2" />
+                        <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
+                      </svg>
+                    </div>
+                    <div>
+                      <h3 className="menu-card__title">{kiloGroup.title}</h3>
+                      <span className="menu-card__badge">{kiloGroup.badge}</span>
+                    </div>
+                  </div>
+                  <ul className="menu-card__list">
+                    {kiloGroup.items.map((item) => (
+                      <MenuItemRow key={item.id} item={item} />
+                    ))}
+                  </ul>
+                  <p className="kilo-card__note">
+                    * Bánh cuốn và bánh ướt được tráng mới nóng mỗi sáng theo yêu cầu. Thích hợp cho bữa sáng gia đình hoặc sự kiện. Vui lòng gọi điện trước để quán chuẩn bị kịp thời.
+                  </p>
+                </div>
               </div>
             )}
 
             {extraGroup && (
-              <div className="menu-card">
+              <div className="menu-card extra-card">
                 <div className="menu-card__header">
                   <div className="menu-card__header-icon" aria-hidden="true">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -83,7 +118,7 @@ export function MenuSection() {
                   </div>
                   <div>
                     <h3 className="menu-card__title">{extraGroup.title}</h3>
-                    <span className="menu-card__badge">Ăn kèm</span>
+                    <span className="menu-card__badge">{extraGroup.badge}</span>
                   </div>
                 </div>
                 <ul className="menu-card__list">
@@ -91,6 +126,11 @@ export function MenuSection() {
                     <MenuItemRow key={item.id} item={item} />
                   ))}
                 </ul>
+                <div className="extra-card__details">
+                  <p className="extra-card__note">
+                    Chả lụa thái dày thơm béo, ăn kèm tăng hương vị đậm đà cho tô bún hoặc đĩa bánh cuốn nóng.
+                  </p>
+                </div>
               </div>
             )}
           </div>
@@ -114,4 +154,3 @@ export function MenuSection() {
     </section>
   );
 }
-

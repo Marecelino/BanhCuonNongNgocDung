@@ -10,7 +10,7 @@ Research and plan the complete UI/UX for a Vietnamese breakfast-shop landing pag
 - The final stack remains React + Vite + JavaScript, static site only.
 - No Spring Boot, backend, REST API, SQL database, authentication, admin panel, cart, checkout, or payment in V1.
 - Do not introduce Three.js. Only recommend 3D if you can identify a specific customer benefit that cannot be achieved more simply.
-- Use confirmed brand `Bánh Cuốn Nóng Ngọc Dung`, opening time `05:00–10:30`, phone `0388506360`, and Maps URL `https://maps.app.goo.gl/RoiN2qYnvUcMYCFQ6`. Do not infer opening days or postal address.
+- Use confirmed brand `Bánh Cuốn Nóng Ngọc Dung`, confirmed physical address `353D, đường Lã Xuân Oai, phường Long Phước, Thành phố Hồ Chí Minh` (never 315), opening time `05:00–10:30`, phone `0388506360`, and Maps URL `https://maps.app.goo.gl/RoiN2qYnvUcMYCFQ6`. Do not infer opening days.
 - Never invent the shop story, Facebook URL, ingredients, reviews, claims, or best sellers.
 - Preserve exact menu and phone data from `docs/PROJECT_BRIEF.md`.
 

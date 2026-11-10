@@ -66,9 +66,10 @@ These are initial tokens. Validate contrast and visual feel in an actual prototy
 ### Journey C — first-time visitor wants to visit the shop
 1. See the brand name and breakfast category.
 2. Check opening time `05:00–10:30`.
-3. Tap "Chỉ đường" to open the owner-provided Google Maps link.
+3. View verified physical address: `353D, đường Lã Xuân Oai, phường Long Phước, Thành phố Hồ Chí Minh`.
+4. Tap "Chỉ đường" to open the owner-provided Google Maps link.
 
-The days of operation and full postal address remain unknown. Do not infer them or print an address.
+Official physical address is confirmed as **353D, đường Lã Xuân Oai, phường Long Phước, Thành phố Hồ Chí Minh**. (Important: Google Maps listing currently shows outdated address 315; the site strictly displays verified 353D). Days of operation remain unspecified; do not claim daily opening.
 
 ## 4. One-page information architecture
 
@@ -186,10 +187,11 @@ The Contact & Location section integrates both an **interactive embedded Google 
 - Two-column editorial layout:
   - **Left column (40–45%)**: Restaurant information & actions:
     - Shop name: **Bánh Cuốn Nóng Ngọc Dung**
+    - Verified physical address: `353D, đường Lã Xuân Oai, phường Long Phước, Thành phố Hồ Chí Minh` (strictly 353D, never 315)
     - Opening hours card: `Mở cửa: 05:00–10:30` (do not invent opening days)
     - Phone number: `0388 506 360` with primary call button (`tel:0388506360`)
     - External "Chỉ đường đến quán ↗" button (`https://maps.app.goo.gl/RoiN2qYnvUcMYCFQ6`)
-    - Do not invent a street address; let the map speak for location.
+    - Note on Google Maps discrepancy: Existing Maps listing displays stale address 315; the website exclusively displays confirmed physical address 353D pending owner's GBP update.
   - **Right column (55–60%)**: Embedded Google Maps:
     - Prominent, balanced frame with 16–20px border radius (`border-radius: var(--radius-xl)`).
     - Border: `1px solid var(--color-border)` with soft shadow (`var(--shadow-md)`).
@@ -198,11 +200,12 @@ The Contact & Location section integrates both an **interactive embedded Google 
 
 **Mobile composition (< 768px) — strictly ordered for one-hand use:**
 1. Section heading ("Đến với Bánh Cuốn Nóng Ngọc Dung", subtitle "Ghé quán thưởng thức bữa sáng nóng hổi.")
-2. Opening hours badge (`Mở cửa: 05:00–10:30`)
-3. Phone/contact card (`0388 506 360`)
-4. Prominent primary call button ("Gọi đặt món — 0388 506 360", full width, min height 48px)
-5. Embedded Google Maps (100% available width, 4:3 aspect ratio, 16px border-radius, no horizontal overflow)
-6. External "Chỉ đường đến quán ↗" button (full width, placed immediately below the map so mobile users do not have to pinch/zoom iframe to trigger driving directions)
+2. Verified physical address badge (`353D, đường Lã Xuân Oai, phường Long Phước, TP.HCM`)
+3. Opening hours badge (`Mở cửa: 05:00–10:30`)
+4. Phone/contact card (`0388 506 360`)
+5. Prominent primary call button ("Gọi đặt món — 0388 506 360", full width, min height 48px)
+6. Embedded Google Maps (100% available width, 4:3 aspect ratio, 16px border-radius, no horizontal overflow)
+7. External "Chỉ đường đến quán ↗" button (full width, placed immediately below the map so mobile users do not have to pinch/zoom iframe to trigger driving directions)
 
 **Technical component specification — `src/components/GoogleMapEmbed.jsx`:**
 - Renders the exact supplied iframe embed URL.
@@ -264,6 +267,47 @@ The Contact & Location section integrates both an **interactive embedded Google 
 - Brand name, confirmed opening time range, phone, owner-provided Maps link, available verified social links, copyright.
 - No invented legal/company details.
 
+### 5.7 Floating Zalo Button (Conditional & Exact Asset Specification)
+
+**Visual & Asset Specification:**
+- **Exact official icon asset:** `https://img.icons8.com/color/48/zalo.png`.
+- **Local asset path:** `public/icons/zalo.png` (downloaded locally to avoid external image requests and maintain strict self-hosted CSP).
+- **Integrity rules:**
+  - Must use the exact provided Zalo icon.
+  - Do NOT replace with Lucide `message-circle`, generic chat speech-bubbles, or custom CSS drawings.
+  - Do NOT alter official brand colors (sky blue background and bold white "Zalo" wordmark).
+  - Do NOT stretch, crop, or distort the icon; preserve 1:1 (48×48px) aspect ratio.
+- **Button styling:**
+  - Circular floating action button: `width: 56px; height: 56px;` (touch area ~56–60px).
+  - Background: `#FFFFFF` with soft circular border `1px solid rgba(0, 0, 0, 0.08)`.
+  - Elevation shadow: `box-shadow: 0 4px 14px rgba(0, 0, 0, 0.16);` with hover elevation `box-shadow: 0 6px 20px rgba(0, 0, 0, 0.22); transform: translateY(-2px);`.
+  - Icon inside button: `width: 38px; height: 38px;` centered perfectly with flexbox.
+
+**Desktop UX (≥ 768px):**
+- Position: Fixed bottom-right: `position: fixed; bottom: 24px; right: 24px; z-index: 46;`
+- Tooltip: "Chat Zalo" surfaced on `:hover` and `:focus-visible` (using `title="Chat Zalo"` and/or accessible CSS tooltip).
+
+**Mobile UX (< 768px):**
+- Position: Fixed bottom-right: `right: 16px; z-index: 46;`
+- Vertical clearance: Stacked safely **ABOVE** the `ContactDock` with safe-area support:
+  - When `ContactDock` is visible: `bottom: calc(var(--dock-height) + env(safe-area-inset-bottom, 0px) + 12px);`
+  - When `ContactDock` is hidden: `bottom: calc(16px + env(safe-area-inset-bottom, 0px));`
+  - Transition: smooth vertical translation matching the dock transition (`transition: bottom var(--transition-normal);`).
+- Never overlaps the "Gọi đặt món" or "Chỉ đường" buttons in the dock.
+
+**Accessibility & Security:**
+- Accessible link name: `aria-label="Nhắn tin qua Zalo"`
+- Link attributes: `rel="noopener noreferrer" target="_blank"`
+- External link destination: `https://zalo.me/0388506360` (only once verified).
+
+**Conditional Behavior:**
+- Default state: `restaurant.zaloUrl` is `null` until the restaurant owner verifies the account.
+- Zero dead buttons: If `restaurant.zaloUrl` is `null` or empty, the `FloatingZalo` component renders `null` (completely unrendered in DOM).
+- Once verified, setting `zaloUrl: "https://zalo.me/0388506360"` automatically surfaces the floating button on both desktop and mobile.
+
+**Attribution:**
+- Icon provided via Icons8 (`https://icons8.com/icon/48/zalo`). Usage complies with Icons8 free tier requirements.
+
 ## 6. Interaction specification
 
 - Anchor nav scrolls to the matching section with `scroll-margin-top` for sticky header.
@@ -303,11 +347,11 @@ See `RESPONSIVE_SPEC.md` for detailed viewport behavior. Critical principle: cha
 ```html
 <html lang="vi">
 <head>
-  <title>Bánh Cuốn Nóng Ngọc Dung — Mở cửa 05:00–10:30</title>
-  <meta name="description" content="Bánh cuốn, bánh ướt nóng, bún chả Hà Nội, bún mọc từ 30.000đ. Đặt món: 0388 506 360. Mở cửa 05:00–10:30." />
+  <title>Bánh Cuốn Nóng Ngọc Dung — 353D Lã Xuân Oai, Long Phước (05:00–10:30)</title>
+  <meta name="description" content="Bánh Cuốn Nóng Ngọc Dung tại 353D Lã Xuân Oai, P. Long Phước, TP.HCM. Bánh cuốn, bánh ướt nóng, bún chả Hà Nội, bún mọc từ 30.000đ. Hotline: 0388 506 360. Mở cửa 05:00–10:30." />
   <meta property="og:type" content="website" />
-  <meta property="og:title" content="Bánh Cuốn Nóng Ngọc Dung" />
-  <meta property="og:description" content="Bánh cuốn, bánh ướt nóng và bún ngon buổi sáng. Gọi đặt: 0388 506 360." />
+  <meta property="og:title" content="Bánh Cuốn Nóng Ngọc Dung — Điểm tâm sáng Long Phước" />
+  <meta property="og:description" content="Bánh cuốn, bánh ướt nóng và bún ngon tại 353D Lã Xuân Oai, P. Long Phước. Gọi đặt: 0388 506 360." />
   <meta property="og:locale" content="vi_VN" />
   <!-- og:image: add after real food photography is supplied -->
   <!-- canonical: add after real domain is confirmed -->
@@ -316,7 +360,32 @@ See `RESPONSIVE_SPEC.md` for detailed viewport behavior. Critical principle: cha
 
 > **og:type must be "website"** — `restaurant` is not a valid Open Graph type. Restaurant-specific structured data belongs in JSON-LD (`@type: "Restaurant"`), not og:type.
 
-JSON-LD Restaurant structured data: include only verified fields. Do not invent `address`, `openingDays`, `servesCuisine` claims, reviews, or social URLs.
+JSON-LD Restaurant structured data: include only verified fields:
+```json
+{
+  "@context": "https://schema.org",
+  "@type": "Restaurant",
+  "name": "Bánh Cuốn Nóng Ngọc Dung",
+  "telephone": "+84388506360",
+  "hasMap": "https://maps.app.goo.gl/RoiN2qYnvUcMYCFQ6",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "353D, đường Lã Xuân Oai",
+    "addressLocality": "Phường Long Phước",
+    "addressRegion": "Thành phố Hồ Chí Minh",
+    "addressCountry": "VN"
+  },
+  "openingHoursSpecification": [
+    {
+      "@type": "OpeningHoursSpecification",
+      "opens": "05:00",
+      "closes": "10:30"
+    }
+  ],
+  "priceRange": "30.000đ - 60.000đ"
+}
+```
+> **Coordinates & Schedule Note:** Do not publish fabricated geographic coordinates (`geo`). Geo coordinates will be added only after verifying the actual storefront pin on Google Maps. Do not invent business opening days.
 
 ## 10. Font strategy
 
@@ -334,15 +403,16 @@ This eliminates the external Google Fonts CDN request and simplifies the Content
 
 Confirmed and ready to use:
 - Brand name: Bánh Cuốn Nóng Ngọc Dung.
+- Official physical address: 353D, đường Lã Xuân Oai, phường Long Phước, Thành phố Hồ Chí Minh.
 - Phone: 0388 506 360.
 - Opening time range: 05:00–10:30 (operating days not yet specified).
-- Google Maps link: https://maps.app.goo.gl/RoiN2qYnvUcMYCFQ6.
+- Google Maps link: https://maps.app.goo.gl/RoiN2qYnvUcMYCFQ6 (pending owner GBP update from 315 to 353D).
 - Menu names and prices in `PROJECT_BRIEF.md`.
 
 Still required before final production release:
 - Real food/shop photos and permission to use them (temporary placeholders are included).
 - Official logo artwork (typographic wordmark can be used meanwhile).
-- Full postal address, if it should be printed separately from the map link.
+- Owner action: update Google Business Profile address from 315 to 353D and verify map pin.
 - Days of operation.
 - Correct Facebook URL and confirmed Zalo destination.
 - Owner confirmation that every price is current.

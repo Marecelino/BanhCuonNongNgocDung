@@ -119,7 +119,8 @@ public/images/
 |---|---|
 | Bánh cuốn / Bánh ướt nóng | 30.000đ |
 | Bún chả Hà Nội | 30.000đ |
-| Bún mọc chả củ cải trắng | 30.000đ |
+| Bún thịt nướng  | 30.000đ |
+| Bún mọc chả  | 30.000đ |
 | Bún mọc sườn non | 40.000đ |
 | Bánh cuốn ký | 60.000đ / 1 ký |
 | Bánh ướt ký | 50.000đ / 1 ký |

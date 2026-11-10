@@ -37,12 +37,21 @@ Breakpoints are starting points; adapt components when content no longer fits.
 - Rationale: mobile visitors need to see the brand identity and the tap-to-call action immediately without having to scroll past a large image first.
 
 ### Menu
-- Single column, full-width category groups.
-- Price text uses `--color-ink` or `--color-leaf` for WCAG AA contrast (never gold accent).
-- Place units with prices in a consistent right-hand column; allow the dish title to wrap without colliding with prices.
-- No carousel for only seven items.
-- Keep category titles visible while scrolling.
+- **Món nóng (4 Flagship Hot Dishes with 4:3 Food Images)**:
+  - Mobile (< 640px): 1-column stack of cards (`menu-dishes-grid`). Each card displays a prominent 4:3 photo, dish title, price formatted in VND (`formatVnd`), and ingredient description. Responsive `picture` element serves `480w` WebP thumbnail on mobile, saving bandwidth and boosting LCP.
+  - Tablet (640–1023px): 2-column balanced grid ($2 \times 2$).
+  - Desktop (≥ 1024px): 4-column unified horizontal row ($1 \times 4$). Hover effect includes subtle elevation (`translateY(-2px)`) and delicate image zoom (`scale(1.04)`).
+- **Bánh cuốn & bánh ướt bán theo ký (Kilo category)**:
+  - Displays category media frame ($4:3$) with `banh-cuon-ky.webp` alongside pricing rows for `Bánh cuốn ký` ($60.000đ$/1 ký) and `Bánh ướt ký` ($50.000đ$/1 ký).
+  - Mobile (< 1024px): Stacked layout (image on top, price rows below).
+  - Desktop (≥ 1024px): Side-by-side layout (220px media frame on left, header + items + note on right).
+- **Món thêm (Extra item)**:
+  - Displays `Chả thêm` ($3.000đ$/miếng) as a clean list item with an icon and tasting tip.
+- **Image Performance**:
+  - All cards enforce explicit intrinsic width/height (`width="600" height="450"`) and CSS `aspect-ratio: 4 / 3`, guaranteeing zero Cumulative Layout Shift (CLS = 0).
+  - Images load asynchronously (`decoding="async"`) and offscreen images are lazy-loaded (`loading="lazy"`).
 - Exact confirmed units preserved: `1 ký` for bulk items, `1 miếng` for chả thêm.
+- No carousel for the 7 items; direct vertical scan is faster and clearer.
 
 ### Contact & Location with Embedded Map
 - Mobile composition must be intentionally redesigned to prevent touch friction.
@@ -72,6 +81,24 @@ Breakpoints are starting points; adapt components when content no longer fits.
 - `<main>` element must include `padding-bottom` equal to dock height (approx. 68px) + `env(safe-area-inset-bottom)` so content is never obscured.
 - `box-shadow: 0 -4px 16px rgba(40,42,36,0.12)`.
 
+### Floating Zalo button (Responsive & conditional specification)
+- **Conditional display**: Renders ONLY when `restaurant.zaloUrl` is verified and non-null. When null, renders nothing (zero dead buttons).
+- **Exact icon asset**: Local `public/icons/zalo.png` (source: `https://img.icons8.com/color/48/zalo.png`). Original brand colors, aspect ratio 1:1 (48×48px), sharp and un-distorted.
+- **Touch target**: Circular container 56×56px with subtle shadow `0 4px 14px rgba(0,0,0,0.16)` (exceeds WCAG 48px minimum target).
+- **Mobile (< 768px)**:
+  - Position: `position: fixed; right: 16px; z-index: 46;`
+  - Stacked vertically **ABOVE** the contact dock to prevent overlap:
+    - Dock visible: `bottom: calc(var(--dock-height) + env(safe-area-inset-bottom, 0px) + 12px);`
+    - Dock hidden: `bottom: calc(16px + env(safe-area-inset-bottom, 0px));`
+  - Smooth vertical coordinate transition matching dock animation.
+- **Tablet & Desktop (≥ 768px)**:
+  - Position: `position: fixed; right: 24px; bottom: 24px; z-index: 46;` (contact dock is hidden on desktop).
+  - Hover & focus state: Elevates subtly (`translateY(-2px)`, enhanced shadow).
+  - Tooltip: "Chat Zalo" surfaced on `:hover` and `:focus-visible`.
+- **Accessibility**:
+  - Accessible name: `aria-label="Nhắn tin qua Zalo"`.
+  - Link target: `target="_blank" rel="noopener noreferrer"`.
+
 ### Gallery
 - 2 columns on mobile, 4 columns on desktop.
 - Aspect ratio 4:3 or 3:2 consistent across all items.
@@ -84,7 +111,7 @@ Breakpoints are starting points; adapt components when content no longer fits.
 - Two-column hero: text/CTA left (55%), 4:3 food image right (45%).
 - Menu can become 2 columns; long names must retain full row width or wrap cleanly.
 - Action buttons remain contained (do not stretch full width across 1024px).
-- **Contact & Location**: Two-column layout (approx. 42% left / 58% right). Left side holds restaurant name, hours, phone, and action buttons. Right side holds the interactive embedded Google Maps framed with 16–18px border radius.
+- **Contact & Location**: Two-column layout (approx. 42% left / 58% right). Left side holds restaurant name, verified address (`353D, đường Lã Xuân Oai, phường Long Phước`), hours `05:00–10:30`, phone, and action buttons. Right side holds the interactive embedded Google Maps framed with 16–18px border radius.
 
 ## 5. Desktop composition (1024px+)
 
@@ -92,7 +119,7 @@ Breakpoints are starting points; adapt components when content no longer fits.
 - Sticky header with brand mark, anchor links, and call button.
 - Two-column editorial hero (55/45) with 4:3 food image.
 - Menu groups in a balanced editorial layout; price column strictly aligned.
-- **Contact & Location**: Elegant two-column layout (approx. 40% left / 60% right). Left column holds confirmed restaurant name, hours `05:00–10:30`, hotline `0388 506 360`, primary call button, and directions button. Right column presents the embedded Google Maps in a prominent frame with 18–20px border radius, subtle border (`1px solid var(--color-border)`), and shadow (`var(--shadow-md)`), matching the warm cream and deep green aesthetic without unnecessary decorative clutter.
+- **Contact & Location**: Elegant two-column layout (approx. 40% left / 60% right). Left column holds confirmed restaurant name, verified address `353D, đường Lã Xuân Oai, phường Long Phước, TP.HCM` (never 315), hours `05:00–10:30`, hotline `0388 506 360`, primary call button, and directions button. Right column presents the embedded Google Maps in a prominent frame with 18–20px border radius, subtle border (`1px solid var(--color-border)`), and shadow (`var(--shadow-md)`), matching the warm cream and deep green aesthetic without unnecessary decorative clutter.
 - No mobile dock rendered (`display: none` at ≥ 768px).
 
 ## 6. Typography and content behavior
