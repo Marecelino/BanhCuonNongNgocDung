@@ -28,6 +28,14 @@ The first release is a public static React site with local menu data and links t
 - Run `npm audit` and inspect findings. Do not blindly force breaking updates.
 - Avoid third-party widgets or tracking scripts unless justified and reviewed.
 - **Font self-hosting**: Be Vietnam Pro is self-hosted in `public/fonts/` (SIL OFL 1.1). This eliminates third-party requests to Google Fonts and eliminates external font tracking risks.
+- **Google Maps iframe embed**: The site embeds an official Google Maps iframe for location preview.
+  - *Privacy implications*: As a third-party resource loaded from Google servers, the iframe may set Google cookies and process visitor metadata (IP address, user agent).
+  - *Controls & Mitigations*:
+    - The iframe uses `loading="lazy"` so it only requests assets when the user scrolls near the Contact & Location section.
+    - Set `referrerPolicy="strict-origin-when-cross-origin"` to prevent leaking full path information.
+    - No Google Maps JavaScript SDK or API key is used, eliminating client credentials exposure and reducing script execution overhead.
+    - Exact embed URL is hardcoded from owner-provided source; no dynamic evaluation or `dangerouslySetInnerHTML`.
+    - Fallback external directions link (`https://maps.app.goo.gl/RoiN2qYnvUcMYCFQ6`) ensures users can navigate without relying on iframe interaction.
 
 ### Privacy
 - Do not collect names, phone numbers, addresses, or order details in the browser in V1.
@@ -38,13 +46,16 @@ The first release is a public static React site with local menu data and links t
 Configure security headers at the hosting/CDN layer where supported:
 
 ```text
-Content-Security-Policy: default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self'; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'; upgrade-insecure-requests
+Content-Security-Policy: default-src 'self'; img-src 'self' data: https://*.google.com https://*.googleapis.com https://*.gstatic.com; style-src 'self' 'unsafe-inline'; script-src 'self'; font-src 'self'; frame-src 'self' https://www.google.com; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'; upgrade-insecure-requests
 X-Content-Type-Options: nosniff
 Referrer-Policy: strict-origin-when-cross-origin
 Permissions-Policy: camera=(), microphone=(), geolocation=()
 ```
 
-> **CSP Note on self-hosted fonts**: Because fonts are self-hosted in `public/fonts/`, `font-src 'self'` is sufficient without allowlisting external Google Fonts domains. If CDN fonts are ever used in the future, `fonts.googleapis.com` and `fonts.gstatic.com` must be explicitly added to `style-src` and `font-src` respectively.
+> **CSP Note on self-hosted fonts & Google Maps embed**:
+> 1. Because fonts are self-hosted in `public/fonts/`, `font-src 'self'` is sufficient without external Google Fonts domains.
+> 2. `frame-src 'self' https://www.google.com;` is explicitly configured to allow the Google Maps embed iframe while preventing arbitrary third-party iframes.
+> 3. `img-src` allows Google Maps tile and attribution images (`https://*.google.com https://*.googleapis.com https://*.gstatic.com`).
 
 ## 3. Release commands
 

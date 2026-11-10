@@ -16,7 +16,8 @@ src/
 │   ├── Container.jsx
 │   ├── SectionHeading.jsx
 │   ├── MenuItemRow.jsx
-│   └── ContactActions.jsx
+│   ├── ContactActions.jsx
+│   └── GoogleMapEmbed.jsx
 ├── sections/
 │   ├── SiteHeader.jsx
 │   ├── HeroSection.jsx
@@ -58,6 +59,7 @@ export const restaurant = {
   openingHoursDisplay: "05:00–10:30",
   openingDays: null, // unknown; do not imply daily opening
   mapUrl: "https://maps.app.goo.gl/RoiN2qYnvUcMYCFQ6",
+  mapEmbedUrl: "https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d3918.8526469330914!2d106.8060858!3d10.8225865!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x317527df79abcf83%3A0xaf357b8eaed3c21e!2sQuan%20ngoc%20dung!5e0!3m2!1svi!2s!4v1794295463121!5m2!1svi!2s",
   address: null, // full postal address not supplied
   zaloUrl: null, // verify destination before enabling
   facebookUrl: null,
@@ -74,7 +76,8 @@ Keep the supplied Maps URL as a real link. Do not invent a postal address from t
 - `MenuSection`: data-driven menu groups and accessible text/prices. Price text uses `--color-ink` or `--color-leaf` for WCAG AA contrast (never gold accent).
 - `MenuItemRow`: predictable name/price/unit layout; long labels like "Bún mọc chả củ cải trắng" wrap cleanly without colliding with prices.
 - `GallerySection`: placeholder image assets during development with `data-placeholder="true"` and `alt=""` (decorative), replaced with owner-approved real images and descriptive alt text before launch.
-- `ContactSection`: verified phone `0388 506 360`, opening time range `05:00–10:30`, owner-provided Google Maps link, and Zalo/Facebook only when their destinations are verified.
+- `ContactSection`: Contact & Location section combining verified info on the left (phone `0388 506 360`, opening hours `05:00–10:30`, primary call CTA, external directions CTA) and embedded Google Maps on the right (`GoogleMapEmbed`) on desktop; vertically stacked in 6-step order on mobile.
+- `GoogleMapEmbed`: renders the official Google Maps embed iframe using the exact owner-supplied URL. Attributes: `title="Bản đồ vị trí Bánh Cuốn Nóng Ngọc Dung"`, `loading="lazy"`, `referrerPolicy="strict-origin-when-cross-origin"`, `allowFullScreen`. Styled with responsive 4:3 aspect ratio, 16–20px border radius, and zero border. No Google Maps JavaScript SDK, no API keys, no `dangerouslySetInnerHTML`.
 - `ContactDock`: mobile-only fixed bottom contact bar (`tel:` call and Google Maps directions). Visibility driven by native `IntersectionObserver`: hidden while `HeroSection` is visible, shown when scrolled past hero, hidden when `ContactSection` enters viewport. Respects `env(safe-area-inset-bottom)`.
 - `ContactActions`: reusable call/directions links.
 - `SiteFooter`: essential business details, hours, phone, Maps link, and copyright.
@@ -96,7 +99,7 @@ Not needed in V1:
 Any static host can serve the Vite `dist/` output, such as Vercel, Netlify, or Cloudflare Pages. Configure HTTPS and security headers at the hosting layer:
 
 ```text
-Content-Security-Policy: default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self'; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'; upgrade-insecure-requests
+Content-Security-Policy: default-src 'self'; img-src 'self' data: https://*.google.com https://*.googleapis.com https://*.gstatic.com; style-src 'self' 'unsafe-inline'; script-src 'self'; font-src 'self'; frame-src 'self' https://www.google.com; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'; upgrade-insecure-requests
 X-Content-Type-Options: nosniff
 Referrer-Policy: strict-origin-when-cross-origin
 Permissions-Policy: camera=(), microphone=(), geolocation=()

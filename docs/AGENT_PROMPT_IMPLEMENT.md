@@ -5,7 +5,7 @@ Implement the restaurant landing page only after the user approves `docs/UI_UX_D
 ## Before coding
 - Inspect current source and package scripts.
 - Read `AGENTS.md`, all applicable `.agents/rules/`, all relevant `.agents/skills/`, and the approved design plan.
-- Use confirmed brand name `Bánh Cuốn Nóng Ngọc Dung`, phone `0388506360` (display `0388 506 360`), opening time range `05:00–10:30`, and owner-provided Maps URL `https://maps.app.goo.gl/RoiN2qYnvUcMYCFQ6`. Do not ask again for these details.
+- Use confirmed brand name `Bánh Cuốn Nóng Ngọc Dung`, phone `0388506360` (display `0388 506 360`), opening time range `05:00–10:30`, owner-provided Maps navigation URL `https://maps.app.goo.gl/RoiN2qYnvUcMYCFQ6`, and exact owner-provided Google Maps embed URL `https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d3918.8526469330914!2d106.8060858!3d10.8225865!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x317527df79abcf83%3A0xaf357b8eaed3c21e!2sQuan%20ngoc%20dung!5e0!3m2!1svi!2s!4v1794295463121!5m2!1svi!2s`. Do not ask again for these details.
 - Do not block implementation on missing non-critical data; keep full postal address/days/social details as null and safely hide unverified actions.
 - Omit StorySection from V1; do not display placeholder messages like "Thông tin sắp cập nhật".
 - Use the included image placeholders in `public/images/` until the owner replaces them. Mark them with `data-placeholder="true"` and `alt=""`.
@@ -59,13 +59,21 @@ Implement the restaurant landing page only after the user approves `docs/UI_UX_D
   - StorySection is omitted in V1.
 - Verification: `npm run lint` + `npm run build` must pass.
 
-### Phase 6 — Contact Section & Mobile Dock
-- Create `src/components/ContactActions.jsx`.
+### Phase 6 — Contact Section, Google Maps Embed & Mobile Dock
+- Create `src/components/GoogleMapEmbed.jsx`:
+  - Renders official Google Maps embed iframe with exact URL `https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d3918.8526469330914!2d106.8060858!3d10.8225865!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x317527df79abcf83%3A0xaf357b8eaed3c21e!2sQuan%20ngoc%20dung!5e0!3m2!1svi!2s!4v1794295463121!5m2!1svi!2s`.
+  - Attributes: `title="Bản đồ vị trí Bánh Cuốn Nóng Ngọc Dung"`, `loading="lazy"`, `referrerPolicy="strict-origin-when-cross-origin"`, `allowFullScreen`, border 0, responsive 4:3 aspect ratio.
+  - No Google Maps JavaScript SDK, no API keys, no `dangerouslySetInnerHTML`.
+- Create `src/components/ContactActions.jsx` (phone call button + external directions button).
 - Create `src/sections/ContactSection.jsx`:
-  - Confirmed phone, hours `05:00–10:30`, and owner Maps link. Unverified Zalo/Facebook hidden.
+  - Section heading: "Đến với Bánh Cuốn Nóng Ngọc Dung", subtitle "Ghé quán thưởng thức bữa sáng nóng hổi."
+  - Desktop: 2-column layout. Left column (info, hours `05:00–10:30`, phone `0388 506 360`, call CTA, directions CTA). Right column (`GoogleMapEmbed` with 16–20px border radius, subtle border, shadow).
+  - Mobile: strict 6-step stacked order (heading → hours → phone → call CTA → 4:3 map 100% width → external directions CTA).
+  - Unverified Zalo/Facebook hidden.
 - Create `src/sections/ContactDock.jsx`:
   - Mobile only (< 768px).
   - Visibility controlled via native `IntersectionObserver` (hidden on Hero, visible past Hero, hidden on Contact).
+  - Two buttons: "Gọi đặt món" (`tel:0388506360`) and "Chỉ đường" (`https://maps.app.goo.gl/RoiN2qYnvUcMYCFQ6`).
   - Respects `env(safe-area-inset-bottom)` with `<main>` padding-bottom compensation.
 - Verification: `npm run lint` + `npm run build` must pass.
 

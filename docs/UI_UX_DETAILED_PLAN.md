@@ -6,7 +6,7 @@ Build a one-page website that feels like a real Vietnamese breakfast place, not 
 
 Brand: **Bánh Cuốn Nóng Ngọc Dung**.
 Primary conversion: tap to call `0388506360`.
-Secondary conversion: open the owner-provided Google Maps location link.
+Secondary conversion: preview location on embedded Google Maps and open the owner-provided Google Maps navigation link.
 Optional conversion: tap the verified Zalo link once its destination is confirmed.
 
 ## 2. Recommended concept
@@ -76,7 +76,7 @@ The days of operation and full postal address remain unknown. Do not infer them 
 2. Hero / brand proposition / primary call-to-action.
 3. Full menu with three groups.
 4. Gallery (placeholder SVGs during development; real photos before launch).
-5. Contact / opening hours / map and directions.
+5. Contact & Location / opening hours / embedded Google Maps preview / external directions link.
 6. Footer with phone and links.
 7. Mobile fixed contact dock (IntersectionObserver-driven visibility).
 
@@ -164,15 +164,100 @@ Mobile:
 - Add descriptive Vietnamese alt text based on the actual real image only after real photos are supplied.
 - Never use stock/generated images as if they depict the actual shop or its dishes.
 
-### 5.5 Contact / location
+### 5.5 Contact & Location — Embedded Map & Directions
 
-- Display phone `0388 506 360` and a large tap-to-call action.
-- Display opening time `05:00–10:30`; do not add "hằng ngày" because operating days are unknown.
-- Add a clear "Chỉ đường" action using the owner-provided URL `https://maps.app.goo.gl/RoiN2qYnvUcMYCFQ6`.
-- Zalo action only after confirming that the number opens the intended shop account.
-- Facebook only after the real page URL is given.
-- Do not invent a street address. A map link may be shown without printing an unverified address.
-- On mobile, keep actions stacked or in a fixed bottom dock with safe-area padding.
+The Contact & Location section integrates both an **interactive embedded Google Maps preview** and an **external navigation action** to provide a complete, low-friction discovery experience.
+
+**Section heading:**
+- Eyebrow: "Địa điểm & Liên hệ"
+- Title: "Đến với Bánh Cuốn Nóng Ngọc Dung"
+- Subtitle: "Ghé quán thưởng thức bữa sáng nóng hổi."
+
+**Two-tier conversion approach:**
+1. **Embedded map preview**: Allows visitors to preview the neighborhood, recognize nearby landmarks, and understand the general location immediately without leaving the landing page.
+2. **External directions action**: Opens the owner-supplied Google Maps link directly in the native Google Maps app for turnkey turn-by-turn navigation.
+
+**Confirmed Google Maps destinations:**
+- Exact iframe embed URL:
+  `https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d3918.8526469330914!2d106.8060858!3d10.8225865!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x317527df79abcf83%3A0xaf357b8eaed3c21e!2sQuan%20ngoc%20dung!5e0!3m2!1svi!2s!4v1794295463121!5m2!1svi!2s`
+- External navigation URL: `https://maps.app.goo.gl/RoiN2qYnvUcMYCFQ6`
+
+**Desktop composition (768px+):**
+- Two-column editorial layout:
+  - **Left column (40–45%)**: Restaurant information & actions:
+    - Shop name: **Bánh Cuốn Nóng Ngọc Dung**
+    - Opening hours card: `Mở cửa: 05:00–10:30` (do not invent opening days)
+    - Phone number: `0388 506 360` with primary call button (`tel:0388506360`)
+    - External "Chỉ đường đến quán ↗" button (`https://maps.app.goo.gl/RoiN2qYnvUcMYCFQ6`)
+    - Do not invent a street address; let the map speak for location.
+  - **Right column (55–60%)**: Embedded Google Maps:
+    - Prominent, balanced frame with 16–20px border radius (`border-radius: var(--radius-xl)`).
+    - Border: `1px solid var(--color-border)` with soft shadow (`var(--shadow-md)`).
+    - Responsive aspect ratio (approx. 4:3 or 16/11) to avoid excessive vertical scroll.
+    - Matches the warm cream (`#FBF8F0`) and deep leaf green (`#315B45`) design tokens.
+
+**Mobile composition (< 768px) — strictly ordered for one-hand use:**
+1. Section heading ("Đến với Bánh Cuốn Nóng Ngọc Dung", subtitle "Ghé quán thưởng thức bữa sáng nóng hổi.")
+2. Opening hours badge (`Mở cửa: 05:00–10:30`)
+3. Phone/contact card (`0388 506 360`)
+4. Prominent primary call button ("Gọi đặt món — 0388 506 360", full width, min height 48px)
+5. Embedded Google Maps (100% available width, 4:3 aspect ratio, 16px border-radius, no horizontal overflow)
+6. External "Chỉ đường đến quán ↗" button (full width, placed immediately below the map so mobile users do not have to pinch/zoom iframe to trigger driving directions)
+
+**Technical component specification — `src/components/GoogleMapEmbed.jsx`:**
+- Renders the exact supplied iframe embed URL.
+- Attributes:
+  - `title="Bản đồ vị trí Bánh Cuốn Nóng Ngọc Dung"` (descriptive, accessible name).
+  - `loading="lazy"` (lazy-loads third-party iframe below the fold).
+  - `referrerPolicy="strict-origin-when-cross-origin"`.
+  - `allowFullScreen`.
+  - Border set to `0` via CSS.
+- CSS wrapper handles responsive sizing via `aspect-ratio: 4 / 3` with `width: 100%`.
+- No Google Maps JavaScript SDK, no API keys, no `dangerouslySetInnerHTML`.
+- Privacy note: As a third-party resource, Google Maps may set cookies or log visitor IPs when loaded; lazy-loading ensures the iframe is only loaded when scrolled into view.
+
+**Desktop ASCII Wireframe:**
+```text
+┌─────────────────────────────────────────────────── max-width 1200px ─┐
+│ CONTACT & LOCATION (Section: "Đến với Bánh Cuốn Nóng Ngọc Dung")     │
+│                                                                      │
+│  ┌─── Cột trái: Thông tin (42%) ───┐  ┌─── Cột phải: Bản đồ (58%) ──┐│
+│  │                                 │  │                             ││
+│  │  [Bánh Cuốn Nóng Ngọc Dung]     │  │  ┌───────────────────────┐  ││
+│  │  Quán ăn sáng gia đình          │  │  │                       │  ││
+│  │                                 │  │  │  GOOGLE MAPS EMBED    │  ││
+│  │  🕐 Mở cửa: 05:00 – 10:30       │  │  │  (Interactive Iframe) │  ││
+│  │                                 │  │  │  Border-radius: 18px  │  ││
+│  │  📞 Hotline: 0388 506 360       │  │  │  Aspect-ratio: 4/3    │  ││
+│  │                                 │  │  │                       │  ││
+│  │  [🔴 Gọi đặt món ngay]          │  │  └───────────────────────┘  ││
+│  │  [🗺 Chỉ đường đến quán ↗]      │  │                             ││
+│  └─────────────────────────────────┘  └─────────────────────────────┘│
+└──────────────────────────────────────────────────────────────────────┘
+```
+
+**Mobile ASCII Wireframe (< 768px):**
+```text
+┌───────────────── 390px ──────────────────┐
+│ CONTACT & LOCATION                       │
+│  Đến với Bánh Cuốn Nóng Ngọc Dung (H2)   │
+│  Ghé quán thưởng thức bữa sáng nóng hổi  │
+│                                          │
+│  🕐 Mở cửa: 05:00 – 10:30                │
+│  📞 Hotline: 0388 506 360                │
+│                                          │
+│  [🔴 Gọi đặt món — 0388 506 360] (h≥48px)│  ← Thao tác gọi nhanh
+│                                          │
+│  ┌─────────────────────────────────────┐ │
+│  │                                     │ │
+│  │  GOOGLE MAPS EMBED (100% width)     │ │
+│  │  Aspect-ratio: 4/3, radius: 16px    │ │
+│  │                                     │ │
+│  └─────────────────────────────────────┘ │
+│                                          │
+│  [🗺 Chỉ đường đến quán ↗] (full width)  │  ← Mở Maps app điều hướng
+└───────────────────────────────────────────┘
+```
 
 ### 5.6 Footer
 
