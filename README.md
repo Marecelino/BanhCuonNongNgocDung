@@ -150,6 +150,46 @@ npm run preview
 
 Nếu project chưa có script `lint`, hãy kiểm tra `package.json` trước khi thêm script ESLint. Không được giả định script đã tồn tại.
 
+## 7. Triển khai lên Vercel
+
+Website sử dụng **Vercel** làm nền tảng hosting với tích hợp Git tự động.
+
+### Thông tin repository
+
+| Thông tin | Giá trị |
+|---|---|
+| Git Provider | GitHub |
+| Repository | `Marecelino/BanhCuonNongNgocDung` |
+| Nhánh production | `main` |
+| Framework | Vite (tự nhận diện) |
+| Lệnh build | `npm run build` |
+| Thư mục output | `dist` |
+| Node.js | 20.x |
+
+### Quy trình tự động
+
+```
+git push origin main  →  Vercel tự build  →  Website cập nhật trong 1–2 phút
+```
+
+Mỗi lần push lên `main` sẽ kích hoạt một production deployment tự động trên Vercel.
+
+### Hướng dẫn setup lần đầu
+
+Xem `docs/VERCEL_SETUP_GUIDE.md` để có hướng dẫn từng bước thiết lập Vercel Dashboard bằng tiếng Việt.
+
+### Tài liệu triển khai
+
+| Tài liệu | Nội dung |
+|---|---|
+| `docs/VERCEL_DEPLOYMENT_PLAN.md` | Kế hoạch và phân tích kỹ thuật triển khai |
+| `docs/VERCEL_SETUP_GUIDE.md` | Hướng dẫn từng bước cho chủ quán (tiếng Việt) |
+| `docs/DEPLOYMENT_CHECKLIST.md` | Checklist kiểm tra sau mỗi lần triển khai |
+
+### Khôi phục phiên bản cũ
+
+Vào **Vercel Dashboard → Deployments → chọn bản cũ → Redeploy**. Vercel lưu tất cả phiên bản trước — khôi phục ngay lập tức.
+
 ## 7. Quy tắc quan trọng
 
 - Chỉ lập plan trong prompt `PLAN_ONLY`; không sửa giao diện trước khi plan được duyệt.

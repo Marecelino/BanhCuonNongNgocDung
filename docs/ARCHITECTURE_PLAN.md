@@ -117,15 +117,60 @@ Avoid creating a global state store. The interactions are anchors and external l
 Not needed in V1:
 - React Router, Redux, Zustand, Axios, React Query, Three.js, charting libraries, form libraries, backend SDKs.
 
-## 6. Deployment & security headers
+## 6. Deployment Architecture
 
-Any static host can serve the Vite `dist/` output, such as Vercel, Netlify, or Cloudflare Pages. Configure HTTPS and security headers at the hosting layer:
+### Hosting Platform
+
+**Vercel** — static site hosting with global CDN, automatic HTTPS, and native Git integration.
+
+```
+GitHub (Marecelino/BanhCuonNongNgocDung)
+       │
+       │  git push main
+       ▼
+  Vercel Build Pipeline
+  • Install: npm ci
+  • Build:   npm run build  →  dist/
+  • Node.js: 20.x
+       │
+       ▼
+  Vercel Global CDN
+  • HTTPS enforced automatically
+  • Security headers via vercel.json
+  • Immutable deployments
+       │
+       ▼
+  Production URL (vercel.app domain → future: custom domain)
+```
+
+### Key Architecture Properties
+
+| Property | Decision |
+|---|---|
+| Hosting type | Static (pure `dist/` output from Vite) |
+| CDN | Vercel Edge Network (global) |
+| HTTPS | Enforced by Vercel, no configuration needed |
+| Git integration | Native Vercel ↔ GitHub (no GitHub Actions needed) |
+| Production branch | `main` |
+| Preview deployments | Automatic for every PR / non-main branch push |
+| Rollback | Instant via Vercel Dashboard → Redeploy previous |
+| Environment variables | None required (fully static, no secrets) |
+| Build config | `vercel.json` at repo root (security headers + SPA rewrite) |
+
+### Security Headers (vercel.json)
+
+Security headers are delivered via `vercel.json` at the repo root — not from the application code:
 
 ```text
-Content-Security-Policy: default-src 'self'; img-src 'self' data: https://*.google.com https://*.googleapis.com https://*.gstatic.com; style-src 'self' 'unsafe-inline'; script-src 'self'; font-src 'self'; frame-src 'self' https://www.google.com; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'; upgrade-insecure-requests
 X-Content-Type-Options: nosniff
+X-Frame-Options: DENY
 Referrer-Policy: strict-origin-when-cross-origin
 Permissions-Policy: camera=(), microphone=(), geolocation=()
+Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline';
+  style-src 'self' 'unsafe-inline'; img-src 'self' data: https://img.icons8.com;
+  font-src 'self'; frame-src https://www.google.com; connect-src 'self';
 ```
+
+See `docs/VERCEL_DEPLOYMENT_PLAN.md` and `docs/DEPLOYMENT_CHECKLIST.md` for the full deployment plan and verification checklist.
 
 Keep the domain and business listing ownership with the restaurant owner.

@@ -1,7 +1,8 @@
 // Data model for menu items and pricing
-// Confirmed owner data: 7 items, 3 categories
-// 5 dedicated food image slots mapped to optimized WebP assets
-// 5 dedicated food image slots mapped to new owner-provided assets
+// Confirmed owner data: 7 items (PROJECT_BRIEF.md) + 2 unconfirmed additions (Chả lụa, Chả Quế Chiên)
+// TODO: owner must confirm whether Chả lụa and Chả Quế Chiên belong in the menu
+// TODO: owner must confirm whether "Topping thêm" or "Chả thêm" is the correct name for id=cha-them
+// All food images are owner-supplied photos (WebP + PNG fallback)
 
 export const menuGroups = [
   {
@@ -15,7 +16,6 @@ export const menuGroups = [
         price: 30000,
         image: "/images/menu/banh-cuon-nong.webp",
         imageThumb: "/images/menu/banh-cuon-nong-thumb.webp",
-        imageAlt: "Đĩa bánh cuốn nóng tráng tại chỗ với chả lụa, nem rán, chả quế, thịt nướng, giá đỗ và hành phi",
         imageFallback: "/images/menu/banh-cuon-nong.png",
         imageAlt: "Đĩa bánh cuốn nóng tráng tại chỗ kèm chả lụa, nem rán, chả nướng và hành phi",
         imagePosition: "center",
@@ -27,14 +27,10 @@ export const menuGroups = [
         name: "Bún chả Hà Nội",
         price: 30000,
         image: "/images/menu/bun-cha-ha-noi.webp",
-        imageThumb: "/images/menu/bun-cha-ha-noi.webp",
-        imageAlt: "Mẹt bún chả Hà Nội truyền thống gồm chả nướng trong bát nước mắm, bún tươi và đĩa rau thơm",
         imageThumb: "/images/menu/bun-cha-ha-noi-thumb.webp",
         imageFallback: "/images/menu/bun-cha-ha-noi.png",
         imageAlt: "Mẹt bún chả Hà Nội truyền thống gồm chả nướng thơm lừng, bát nước mắm chua ngọt và bún tươi",
         imagePosition: "center",
-        imageStatus: "owner-photo-low-res",
-        description: "Thịt nướng thơm lừng đậm vị kèm nước mắm chua ngọt thanh đạm, đu đủ ngâm giòn và bún sợi tươi.",
         imageStatus: "owner-photo",
         description: "Thịt nướng than hoa đậm đà kèm nước mắm chua ngọt thanh nhẹ, đu đủ ngâm giòn và đĩa rau sống tươi.",
       },
@@ -44,12 +40,10 @@ export const menuGroups = [
         price: 30000,
         image: "/images/menu/bun-moc-cha-cu-cai-trang.webp",
         imageThumb: "/images/menu/bun-moc-cha-cu-cai-trang-thumb.webp",
-        imageAlt: "Tô bún mọc chả củ cải trắng nóng hổi với mọc viên, chả lụa, củ cải trắng ngọt nước và hành phi",
         imageFallback: "/images/menu/bun-moc-cha-cu-cai-trang.png",
         imageAlt: "Tô bún mọc chả củ cải trắng nóng hổi với mọc viên giòn dai, chả lụa và nước dùng ngọt thanh",
         imagePosition: "center",
         imageStatus: "owner-photo",
-        description: "Nước dùng hầm xương trong ngọt thanh với củ cải trắng, viên mọc giòn dai và chả lụa thái lát.",
         description: "Nước dùng hầm xương trong ngọt thanh với củ cải trắng, mọc viên giòn dai và chả lụa thái dày thơm béo.",
       },
       {
@@ -57,14 +51,10 @@ export const menuGroups = [
         name: "Bún mọc sườn non",
         price: 40000,
         image: "/images/menu/bun-moc-suon-non.webp",
-        imageThumb: "/images/menu/bun-moc-suon-non.webp",
-        imageAlt: "Bún mọc sườn non — Hình ảnh giữ chỗ tạm thời, đang chờ ảnh chụp chính thức từ quán",
         imageThumb: "/images/menu/bun-moc-suon-non-thumb.webp",
         imageFallback: "/images/menu/bun-moc-suon-non.png",
         imageAlt: "Tô bún mọc sườn non đặc biệt ninh mềm béo ngậy kèm mọc giòn ngọt và hành hoa",
         imagePosition: "center",
-        imageStatus: "placeholder-license-unverified",
-        description: "Tô đặc biệt sườn non ninh mềm béo ngậy kết hợp cùng mọc mộc nhĩ giòn ngọt và hành hoa thái nhỏ.",
         imageStatus: "owner-photo",
         description: "Tô đặc biệt sườn non ninh mềm béo ngậy kết hợp cùng mọc mộc nhĩ giòn ngọt, nước dùng đậm đà thơm phức.",
       },
@@ -74,9 +64,6 @@ export const menuGroups = [
     id: "banh-cuon-banh-uot-theo-ky",
     title: "Bánh cuốn & bánh ướt bán theo ký",
     badge: "Đặt trước theo ký",
-    categoryImage: "/images/menu/banh-cuon-ban-theo-ky.webp",
-    categoryImageAlt: "Bánh cuốn tráng nóng nguyên bản rắc hành phi — hình minh họa cho bánh cuốn bán theo ký",
-    categoryImageStatus: "owner-photo-portion-only",
     categoryImage: "/images/menu/banh-cuon-ky.webp",
     categoryImageThumb: "/images/menu/banh-cuon-ky-thumb.webp",
     categoryImageFallback: "/images/menu/banh-cuon-ky.png",
@@ -88,15 +75,11 @@ export const menuGroups = [
         name: "Bánh cuốn ký",
         price: 60000,
         unit: "1 ký",
-        image: "/images/menu/banh-cuon-ban-theo-ky.webp",
-        imageThumb: "/images/menu/banh-cuon-ban-theo-ky-thumb.webp",
-        imageAlt: "Bánh cuốn tráng nóng nguyên bản rắc hành phi — hình minh họa cho bánh cuốn bán theo ký",
         image: "/images/menu/banh-cuon-ky.webp",
         imageThumb: "/images/menu/banh-cuon-ky-thumb.webp",
         imageFallback: "/images/menu/banh-cuon-ky.png",
         imageAlt: "Bánh cuốn ký tráng mới nóng mỗi sáng",
         imagePosition: "center",
-        imageStatus: "owner-photo-portion-only",
         imageStatus: "owner-photo",
       },
       {
@@ -104,14 +87,11 @@ export const menuGroups = [
         name: "Bánh ướt ký",
         price: 50000,
         unit: "1 ký",
-        image: "/images/menu/banh-cuon-ban-theo-ky.webp",
-        imageThumb: "/images/menu/banh-cuon-ban-theo-ky-thumb.webp",
-        imageAlt: "Bánh ướt tráng mềm mượt — hình minh họa cho bánh ướt bán theo ký",
-        imagePosition: "center",
-        imageStatus: "owner-photo-portion-only",
         image: null,
         imageThumb: null,
+        imageFallback: null,
         imageAlt: null,
+        imagePosition: "center",
         imageStatus: "no-image-supplied",
       },
     ],
@@ -120,26 +100,30 @@ export const menuGroups = [
     id: "mon-them",
     title: "Món thêm",
     badge: "Ăn kèm nóng hổi",
+    // TODO: owner must confirm item names, prices, and whether Chả lụa / Chả Quế Chiên belong here
     items: [
       {
         id: "cha-them",
+        // TODO: confirm display name — PROJECT_BRIEF.md says "Chả thêm"; current value is "Topping thêm"
         name: "Topping thêm",
         price: 3000,
         unit: "1 miếng",
       },
       {
+        // TODO: unconfirmed addition — verify with owner before launch
         id: "cha-lua",
-        name: "Chả lụa ",
+        name: "Chả lụa",
         price: 90000,
-        unit: "1 cây(nửa ký)",
+        unit: "1 cây (nửa ký)",
       },
-                  {
+      {
+        // TODO: unconfirmed addition — verify with owner before launch
         id: "cha-que",
         name: "Chả Quế Chiên",
         price: 90000,
-        unit: "1 cây(nửa ký)",
+        unit: "1 cây (nửa ký)",
       },
-    ]
+    ],
   },
 ];
 

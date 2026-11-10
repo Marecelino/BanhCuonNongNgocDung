@@ -61,7 +61,57 @@ Permissions-Policy: camera=(), microphone=(), geolocation=()
 > 2. `frame-src 'self' https://www.google.com;` is explicitly configured to allow the Google Maps embed iframe while preventing arbitrary third-party iframes.
 > 3. `img-src` allows Google Maps tile and attribution images (`https://*.google.com https://*.googleapis.com https://*.gstatic.com`).
 
-## 3. Release commands
+## 3. Vercel Deployment Security
+
+The project is deployed to **Vercel**. The following deployment-specific security controls apply.
+
+### HTTPS
+
+Vercel enforces HTTPS automatically on all deployments, including preview URLs. No configuration is needed in the application.
+
+### Security Headers via `vercel.json`
+
+Security headers are configured in `vercel.json` at the repository root and applied to every response by Vercel's CDN:
+
+```json
+{
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        { "key": "X-Content-Type-Options", "value": "nosniff" },
+        { "key": "X-Frame-Options", "value": "DENY" },
+        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
+        { "key": "Permissions-Policy", "value": "camera=(), microphone=(), geolocation=()" },
+        {
+          "key": "Content-Security-Policy",
+          "value": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://img.icons8.com; font-src 'self'; frame-src https://www.google.com; connect-src 'self';"
+        }
+      ]
+    }
+  ]
+}
+```
+
+**CSP directive rationale:**
+- `frame-src https://www.google.com` — allows the official Google Maps embed iframe
+- `img-src https://img.icons8.com` — allows the external Zalo icon if `zalo.png` is not downloaded locally; remove once icon is locally hosted
+- `font-src 'self'` — self-hosted Be Vietnam Pro fonts only; no Google Fonts CDN
+- `'unsafe-inline'` on `script-src` and `style-src` — required for Vite's injected runtime; acceptable for a static marketing site with no user data
+
+### No Secrets in Repository
+
+Verified: no `.env` files, no API keys, no Vercel tokens, no GitHub tokens in the source. The project is fully static with no server-side operations.
+
+### Reproducible Builds
+
+Vercel is configured to use `npm ci` (not `npm install`) to enforce exact lockfile installation and prevent accidental dependency upgrades.
+
+### No Environment Variables
+
+No runtime environment variables are needed. All data is static local JS files.
+
+## 4. Release commands
 
 ```powershell
 npm audit
@@ -71,7 +121,7 @@ npm run build
 
 Run only scripts actually defined in `package.json`. Document any missing script rather than claiming it passed.
 
-## 4. Residual risks
+## 5. Residual risks
 
 - **Google Maps & Address Discrepancy Risk**: The existing Google Maps listing displays an outdated address (`315 Lã Xuân Oai`), while the verified physical address is `353D Lã Xuân Oai, P. Long Phước`.
   - *Risk*: Customers following navigation could arrive at an incorrect property if the pin is misaligned.
@@ -80,7 +130,7 @@ Run only scripts actually defined in `package.json`. Document any missing script
 - Hosting-level security headers depend on the selected platform and deployment config.
 - The site still relies on the security of its static host, DNS/domain account, and dependency supply chain.
 
-## 5. References
+## 6. References
 
 - OWASP JavaScript and TypeScript Security Cheat Sheet: https://cheatsheetseries.owasp.org/cheatsheets/JavaScript_and_TypeScript_Security_Cheat_Sheet.html
 - OWASP Content Security Policy Cheat Sheet: https://cheatsheetseries.owasp.org/cheatsheets/Content_Security_Policy_Cheat_Sheet.html
