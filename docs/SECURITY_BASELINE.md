@@ -19,31 +19,32 @@ The first release is a public static React site with local menu data and links t
 ### External links
 - Allow only expected `https:` social/map destinations and `tel:` for the phone control.
 - Verify the target belongs to the shop before release.
-- Use `rel="noopener noreferrer"` for links opened in a new tab.
-- Do not make placeholder links look functional.
+- Use `rel="noopener noreferrer"` for all links opened in a new tab (`target="_blank"`).
+- Do not make placeholder links look functional. Hide unverified Zalo/Facebook actions.
 
 ### Third-party dependencies and embeds
-- Keep package count small; commit `package-lock.json`.
+- Keep package count minimal; commit `package-lock.json`.
 - Review package ownership, release health and scripts before installation.
 - Run `npm audit` and inspect findings. Do not blindly force breaking updates.
 - Avoid third-party widgets or tracking scripts unless justified and reviewed.
+- **Font self-hosting**: Be Vietnam Pro is self-hosted in `public/fonts/` (SIL OFL 1.1). This eliminates third-party requests to Google Fonts and eliminates external font tracking risks.
 
 ### Privacy
 - Do not collect names, phone numbers, addresses, or order details in the browser in V1.
-- No analytics/cookie banner is needed unless analytics or non-essential cookies are actually added.
+- No analytics/cookie banner is needed because no analytics, trackers, or non-essential cookies are present.
 - If tracking is added later, document data, purpose, provider, retention, consent/legal review and privacy notice requirements.
 
 ### Hosting headers
-Configure security headers at the hosting/CDN layer where supported. Example baseline to adapt and test (do not copy blindly if external fonts/images/embeds need additional allowlist entries):
+Configure security headers at the hosting/CDN layer where supported:
 
 ```text
-Content-Security-Policy: default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self'; font-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'; upgrade-insecure-requests
+Content-Security-Policy: default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self'; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'; upgrade-insecure-requests
 X-Content-Type-Options: nosniff
 Referrer-Policy: strict-origin-when-cross-origin
 Permissions-Policy: camera=(), microphone=(), geolocation=()
 ```
 
-If the site embeds Google Maps, loads hosted fonts, or serves images from a CDN, update the CSP allowlist narrowly and test it. Prefer a normal map/directions link over an iframe if the iframe adds little value.
+> **CSP Note on self-hosted fonts**: Because fonts are self-hosted in `public/fonts/`, `font-src 'self'` is sufficient without allowlisting external Google Fonts domains. If CDN fonts are ever used in the future, `fonts.googleapis.com` and `fonts.gstatic.com` must be explicitly added to `style-src` and `font-src` respectively.
 
 ## 3. Release commands
 
@@ -57,7 +58,7 @@ Run only scripts actually defined in `package.json`. Document any missing script
 
 ## 4. Residual risks
 
-- An incorrect Maps URL can send customers to the wrong place; keep the exact URL supplied by the owner. Verify Zalo/Facebook destinations before enabling those actions.
+- An incorrect Maps URL can send customers to the wrong place; keep the exact URL supplied by the owner (`https://maps.app.goo.gl/RoiN2qYnvUcMYCFQ6`). Verify Zalo/Facebook destinations before enabling those actions.
 - Hosting-level security headers depend on the selected platform and deployment config.
 - The site still relies on the security of its static host, DNS/domain account, and dependency supply chain.
 

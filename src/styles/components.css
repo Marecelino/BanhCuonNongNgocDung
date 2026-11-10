@@ -1,0 +1,126 @@
+/* ============================================================
+   Buttons
+   ============================================================ */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  font-family: var(--font-body);
+  font-weight: var(--weight-semibold);
+  border-radius: var(--radius-full);
+  transition: background-color var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast), transform var(--transition-fast);
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  border: 1px solid transparent;
+}
+
+.btn:active {
+  transform: scale(0.98);
+}
+
+.btn--sm {
+  min-height: 40px;
+  padding: 0.4rem 1rem;
+  font-size: var(--text-sm);
+}
+
+.btn--md {
+  min-height: 48px;
+  padding: 0.75rem 1.5rem;
+  font-size: var(--text-base);
+}
+
+.btn--lg {
+  min-height: 52px;
+  padding: 0.875rem 2rem;
+  font-size: var(--text-lg);
+}
+
+.btn--primary {
+  background-color: var(--clr-cta);
+  color: #ffffff;
+}
+
+.btn--primary:hover {
+  background-color: var(--clr-cta-hover);
+  color: #ffffff;
+}
+
+.btn--secondary {
+  background-color: var(--clr-brand-light);
+  color: var(--clr-brand);
+  border-color: var(--clr-brand);
+}
+
+.btn--secondary:hover {
+  background-color: var(--clr-brand);
+  color: #ffffff;
+}
+
+.btn--ghost {
+  background-color: transparent;
+  color: var(--clr-text);
+  border-color: var(--color-border-strong);
+}
+
+.btn--ghost:hover {
+  background-color: rgba(0, 0, 0, 0.04);
+  border-color: var(--clr-text);
+}
+
+.btn--white {
+  background-color: #ffffff;
+  color: var(--clr-brand);
+}
+
+.btn--white:hover {
+  background-color: var(--color-rice);
+  color: var(--clr-brand-hover);
+}
+
+.btn--full {
+  width: 100%;
+}
+
+/* ============================================================
+   Section Headings
+   ============================================================ */
+.section-heading {
+  margin-bottom: var(--space-8);
+}
+
+.section-heading--center {
+  text-align: center;
+  margin-inline: auto;
+  max-width: 680px;
+}
+
+.section-heading--left {
+  text-align: left;
+}
+
+.section-heading__eyebrow {
+  display: inline-block;
+  font-size: var(--text-xs);
+  font-weight: var(--weight-bold);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--clr-brand);
+  background-color: var(--clr-brand-light);
+  padding: 0.25rem 0.75rem;
+  border-radius: var(--radius-full);
+  margin-bottom: var(--space-3);
+}
+
+.section-heading__title {
+  margin-bottom: var(--space-2);
+}
+
+.section-heading__subtitle {
+  color: var(--clr-text-muted);
+  font-size: var(--text-base);
+  line-height: var(--leading-relaxed);
+}
+

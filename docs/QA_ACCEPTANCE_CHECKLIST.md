@@ -1,53 +1,68 @@
 # QA & Acceptance Checklist
 
 ## Content correctness
-- [ ] All 7 menu entries match the owner's spelling and prices.
-- [ ] Per-kilogram and per-piece units are visible.
-- [ ] Phone displayed as `0388 506 360` and call link uses `tel:0388506360`.
-- [ ] Zalo destination verified by owner.
-- [ ] Facebook destination verified by owner.
 - [ ] Brand name is exactly `Bánh Cuốn Nóng Ngọc Dung`.
+- [ ] All 7 menu entries match the owner's spelling, prices and units exactly:
+  - Bánh cuốn / Bánh ướt nóng — 30.000đ
+  - Bún chả Hà Nội — 30.000đ
+  - Bún mọc chả củ cải trắng — 30.000đ
+  - Bún mọc sườn non — 40.000đ
+  - Bánh cuốn ký — 60.000đ / 1 ký
+  - Bánh ướt ký — 50.000đ / 1 ký
+  - Chả thêm — 3.000đ / 1 miếng
+- [ ] Phone displayed as `0388 506 360` and call link uses `tel:0388506360`.
 - [ ] Opening time is displayed as `05:00–10:30` without claiming daily operation.
 - [ ] “Chỉ đường” opens the exact owner-provided Maps URL: `https://maps.app.goo.gl/RoiN2qYnvUcMYCFQ6`.
 - [ ] Do not print an unverified full postal address.
+- [ ] Unverified Zalo and Facebook actions are safely hidden (no dead or placeholder buttons).
+- [ ] StorySection is omitted in V1; no public messages like "Thông tin sắp cập nhật".
 - [ ] No fake reviews, ratings, awards, food claims or promotions.
 
 ## UI and responsive
 - [ ] 320, 360, 390, 430, 768, 1024, 1280 and 1440 CSS px checked.
-- [ ] No horizontal scrolling at any required width.
-- [ ] Longest menu item wraps without colliding with price.
-- [ ] Mobile hero is intentionally reordered/cropped, not merely scaled down.
-- [ ] Mobile sticky contact dock does not cover menu/footer and respects safe-area inset.
-- [ ] Tablet and desktop layouts use available width without stretching text too far.
-- [ ] No layout shift caused by images without dimensions/aspect ratios.
+- [ ] No horizontal scrolling at any required viewport width.
+- [ ] Header uses `position: sticky; top: 0` on desktop and mobile; no layout jumps.
+- [ ] Hero and dish image aspect ratios are unified to 4:3.
+- [ ] Mobile hero content order: eyebrow → heading → hours → primary call CTA → 4:3 image → secondary menu CTA.
+- [ ] Longest menu item ("Bún mọc chả củ cải trắng") wraps without colliding with price.
+- [ ] Mobile sticky contact dock visibility is driven by `IntersectionObserver` (hidden on Hero, visible past Hero, hidden on Contact).
+- [ ] Mobile sticky contact dock respects `env(safe-area-inset-bottom)` and `<main>` has padding-bottom compensation to prevent obscuring content.
+- [ ] Tablet and desktop layouts use available width gracefully without over-stretching text lines.
+- [ ] No layout shift (CLS < 0.1) caused by images without dimensions/aspect ratios.
 
 ## Accessibility
-- [ ] Semantic landmarks and heading hierarchy.
-- [ ] Keyboard navigation and visible focus.
+- [ ] Semantic landmarks (`<header>`, `<nav>`, `<main>`, `<section>`, `<footer>`) and heading hierarchy (`<h1>` to `<h3>`).
+- [ ] Keyboard navigation and visible focus rings on all interactive elements.
+- [ ] Mobile menu button has `aria-expanded`, `aria-controls="mobile-nav"`, and closes on `Escape`.
 - [ ] Links and buttons have meaningful accessible names.
-- [ ] Images have useful alt text or empty alt if decorative.
-- [ ] Text and controls have sufficient contrast.
-- [ ] Interactive targets are comfortably tappable.
-- [ ] Reduced motion is respected.
-- [ ] No hover-only behavior.
+- [ ] Placeholder images have `alt=""` (empty = decorative) and `data-placeholder="true"`.
+- [ ] Text contrast meets WCAG AA (≥ 4.5:1):
+  - `--color-ink #282A24` on `#FBF8F0`: ~12.5:1 (AAA)
+  - `--color-leaf #315B45` on `#FBF8F0`: ~6.2:1 (AA)
+  - `--color-muted #696960` on `#FBF8F0`: ~5.1:1 (AA with safe margin)
+  - Price text uses `--color-ink` or `--color-leaf` (NEVER `--color-shallot` gold on light backgrounds).
+- [ ] Interactive targets meet minimum 44–48px on mobile.
+- [ ] `prefers-reduced-motion` is respected (CSS transitions shortened/disabled).
+- [ ] No hover-only interactions (all content accessible via tap/keyboard).
 
-## Performance
-- [ ] Hero image optimized and prioritized.
-- [ ] Temporary placeholder images are identified as placeholders and replaced with owner-approved real photos before launch.
-- [ ] Below-the-fold images lazy-loaded.
+## Performance & SEO
+- [ ] Document language set to `lang="vi"`.
+- [ ] Open Graph `og:type` is `website` (not `restaurant`).
+- [ ] JSON-LD Restaurant structured data contains verified fields only.
+- [ ] Be Vietnam Pro font is self-hosted in `public/fonts/` (no Google Fonts network call).
+- [ ] Hero image loaded eagerly (`loading="eager"`).
+- [ ] Gallery images lazy-loaded (`loading="lazy"`).
 - [ ] No unnecessary 3D/WebGL or autoplay video.
 - [ ] No large unused dependencies.
-- [ ] Lighthouse/PageSpeed checked on mobile if available.
-- [ ] Core Web Vitals targets considered: LCP ≤ 2.5s, INP < 200ms, CLS < 0.1.
 
 ## Security and technical
-- [ ] No secrets in source or Vite client env.
-- [ ] No unsafe HTML injection/eval.
-- [ ] External links use correct scheme and rel attributes.
-- [ ] `npm audit` reviewed.
-- [ ] Lint passes if configured.
-- [ ] Production build passes.
-- [ ] Hosting HTTPS and security headers configured/tested.
+- [ ] No secrets in source or Vite client environment variables.
+- [ ] No unsafe HTML injection, `eval`, or `dangerouslySetInnerHTML`.
+- [ ] External links use `https:` and `rel="noopener noreferrer"`. Phone uses `tel:`.
+- [ ] `npm audit` reviewed with no critical/high unaddressed vulnerabilities.
+- [ ] `npm run lint` passes with 0 errors.
+- [ ] `npm run build` succeeds cleanly.
+- [ ] Hosting CSP configured with `font-src 'self'`.
 
 ## Release gate
-Do not mark complete while any business-critical contact link is a placeholder, a menu price is unverified, any temporary image placeholder remains in production, or a required build check fails. The owner-provided Maps link is usable; Zalo/Facebook remain disabled until their true destinations are verified.
+Do not mark complete while any business-critical contact link is broken, a menu price is unverified, any temporary image placeholder remains in production without owner approval, or a required build check fails.

@@ -8,77 +8,105 @@ Mobile is the primary decision surface, not a secondary breakpoint. A breakfast 
 
 | Width | Layout behavior | Header/navigation | Hero | Menu | Contact |
 |---:|---|---|---|---|---|
-| 320–359 | Narrow phone | Compact brand + icon menu; keep call target visible | Stack; short headline; image below copy | One column; longest names wrap | Two clear actions; no crowded labels |
-| 360–639 | Standard phone | Compact header; anchor drawer or short nav | Stack; action above fold if practical | One column; price aligned right | Optional sticky bottom call/Maps bar |
-| 640–767 | Large phone/small tablet | Compact/full nav depending fit | Stack or 60/40 split only if readable | One column or two sections stacked | Full-width or side-by-side CTA |
-| 768–1023 | Tablet | Full nav if it fits; otherwise menu toggle | Two-column hero | Two columns where names remain readable | Contact panel + map/location block |
-| 1024–1279 | Laptop | Full horizontal nav | Two-column editorial hero | Balanced menu grid/list | Contact details and map side-by-side |
-| 1280–1440+ | Desktop | Full nav and phone CTA | Constrained content width; large image | Two-column sections; no overly wide text lines | Spacious contact section |
+| 320–359 | Narrow phone | Sticky header; compact brand + accessible toggle; no clipped text | Single-column stack; reordered content; 4:3 image; no overflow | One column; longest names wrap naturally; aligned prices | Clear stacked actions; no crowded labels |
+| 360–639 | Standard phone | Sticky header; brand + toggle; anchor drawer | Single-column stack; call CTA above image; 4:3 image | One column; prices aligned right | Sticky bottom dock (IO-controlled) |
+| 640–767 | Large phone/small tablet | Sticky header; compact/full nav | Single-column stack with generous padding; 4:3 image | One column or grouped cards | Full-width or side-by-side CTA |
+| 768–1023 | Tablet | Sticky header; full horizontal nav | Two-column editorial hero; 4:3 image | Two columns where names remain readable | Contact panel + location block |
+| 1024–1279 | Laptop | Sticky header; full horizontal nav | Two-column editorial hero (55/45); 4:3 image | Balanced menu grid/list | Contact details and map side-by-side |
+| 1280–1440+ | Desktop | Sticky header; full nav and phone CTA | Constrained content width (max 1200px); 4:3 image | Two-column sections; aligned price column | Spacious contact section |
 
 Breakpoints are starting points; adapt components when content no longer fits.
 
 ## 3. Mobile composition — deliberately different
 
 ### Header
-- Height compact; logo/name and one accessible menu control.
-- Use an anchor drawer or short nav only if needed; one-page landing may use a direct “Menu” jump instead of a hamburger.
-- Avoid duplicate CTAs in every row.
+- Position: `sticky; top: 0; z-index: 50`. Does not break out of document flow; no manual `padding-top` required in hero.
+- Brand name as typographic wordmark on the left.
+- Accessible menu toggle on the right: `aria-expanded`, `aria-controls="mobile-nav"`, minimum 44x44px touch target, Escape-to-close keyboard support, and visible focus outline.
+- Drawer contains anchors to: Thực đơn (`#thuc-don`), Hình ảnh (`#hinh-anh`), Liên hệ (`#lien-he`).
 
 ### Hero
-- Priority order: food/shop identity → what is sold → call action → hero photo → menu shortcut.
-- Use a vertical/square image crop distinct from desktop crop.
-- Ensure heading does not cover the food subject or shrink to unreadable size.
+- Unified 4:3 aspect ratio food photography placeholder, replaced by approved real photo before launch.
+- **Mobile content order (one-hand scan)**:
+  1. Eyebrow label ("BỮA SÁNG VIỆT")
+  2. H1 heading ("Bánh cuốn nóng & món ngon buổi sáng")
+  3. Opening hours (`Mở cửa: 05:00–10:30` — do not claim daily operation)
+  4. **Primary CTA** — full-width "Gọi đặt món — 0388 506 360" (minimum 48px height)
+  5. Hero food image (4:3, full width, border-radius 12px)
+  6. **Secondary CTA** — "Xem thực đơn ↓" (ghost/secondary button)
+- Rationale: mobile visitors need to see the brand identity and the tap-to-call action immediately without having to scroll past a large image first.
 
 ### Menu
-- One column, no side-by-side price collisions.
-- Place units with prices in a consistent right-hand column; allow the dish title to wrap.
+- Single column, full-width category groups.
+- Price text uses `--color-ink` or `--color-leaf` for WCAG AA contrast (never gold accent).
+- Place units with prices in a consistent right-hand column; allow the dish title to wrap without colliding with prices.
 - No carousel for only seven items.
-- Keep category titles visible while scrolling; optional sticky category chips only if they do not crowd the top.
+- Keep category titles visible while scrolling.
+- Exact confirmed units preserved: `1 ký` for bulk items, `1 miếng` for chả thêm.
 
-### Sticky contact dock
-- Consider two actions: `Gọi đặt món` and `Chỉ đường` using the supplied Google Maps link. Zalo can replace/add as a secondary action only after the account destination is verified.
-- Use a minimum practical touch size around 44 CSS px; respect `env(safe-area-inset-bottom)`.
-- Add page bottom padding equal to dock height plus safe-area inset.
-- Do not show the Zalo action until the destination is verified.
-- Show the time range `05:00–10:30` without assuming any operating days.
-- Hide or simplify the dock when it overlaps forms/other critical UI (V1 should not need a form).
+### Sticky contact dock (Mobile only, < 768px)
+- **Visibility driven by native `IntersectionObserver`** (no fixed timer delay):
+  - **Hidden** while `HeroSection` is visible in viewport (`threshold: 0`).
+  - **Visible** after the user scrolls beyond `HeroSection`.
+  - **Hidden** when `ContactSection` enters viewport (`threshold: 0.1`).
+  - **Hidden** when the user scrolls back up to `HeroSection`.
+- Contains two equal-width actions:
+  - "Gọi đặt món" (`tel:0388506360`)
+  - "Chỉ đường" (owner-provided Google Maps URL)
+- Do not render Zalo action until destination account is verified.
+- Respect `env(safe-area-inset-bottom)`.
+- `<main>` element must include `padding-bottom` equal to dock height (approx. 68px) + `env(safe-area-inset-bottom)` so content is never obscured.
+- `box-shadow: 0 -4px 16px rgba(40,42,36,0.12)`.
 
 ### Gallery
-- Single column or horizontal swipe only if there is a strong benefit. Ensure scroll is still obvious.
-- Do not auto-advance a carousel.
+- 2 columns on mobile, 4 columns on desktop.
+- Aspect ratio 4:3 or 3:2 consistent across all items.
+- Placeholder images use `alt=""` (empty = decorative) and `data-placeholder="true"`.
+- Do not use autoplay or carousels.
 
-## 4. Tablet composition
+## 4. Tablet composition (768–1023px)
 
-- Use two-column hero only if headline and CTA maintain readable widths.
-- Menu can become 2 columns; long names must retain the full row width or wrap cleanly.
-- Do not stretch phone CTAs across the entire tablet width without reason.
+- Sticky header with full navigation.
+- Two-column hero: text/CTA left (55%), 4:3 food image right (45%).
+- Menu can become 2 columns; long names must retain full row width or wrap cleanly.
+- Action buttons remain contained (do not stretch full width across 1024px).
 
-## 5. Desktop composition
+## 5. Desktop composition (1024px+)
 
-- Main content max width approximately 1120–1200px.
-- Hero can use a 5/7 or 6/6 split; exact ratio depends on photograph crop.
-- Menu group can use a two-column editorial composition.
-- Add more whitespace and image scale, not more navigation complexity.
-- Do not make text lines excessively long.
+- Main content max width: 1200px.
+- Sticky header with brand mark, anchor links, and call button.
+- Two-column editorial hero (55/45) with 4:3 food image.
+- Menu groups in a balanced editorial layout; price column strictly aligned.
+- Contact section with 2-column layout (contact info + operating hours / map link).
+- No mobile dock rendered (`display: none` at ≥ 768px).
 
 ## 6. Typography and content behavior
 
-- Body copy: aim 16–18px; menu rows at least 16px on mobile.
-- Use fluid display sizing (`clamp`) for headings, but define sensible min/max values.
-- Prices use tabular numerals if available and consistent formatting.
-- Long item: “Bún mọc chả củ cải trắng” must wrap naturally without truncation.
-- Avoid text inside images; preserve copy as actual HTML text.
+- Body copy: 16–18px; menu rows at least 16px on mobile.
+- Fluid display sizing using `clamp()`.
+- Supporting text color: `--color-muted: #696960` (~5.1:1 contrast on `#FBF8F0` rice background).
+- Prices use tabular numerals (`font-variant-numeric: tabular-nums`).
+- Long item: "Bún mọc chả củ cải trắng" must wrap naturally without truncation or horizontal overflow.
+- Avoid text inside images; all menu copy is real HTML text.
 
 ## 7. Media and performance
 
-- Use separate desktop/mobile crops only if the subject composition requires it.
-- Use AVIF/WebP with fallbacks when supported by the current asset pipeline.
-- Reserve image dimensions/aspect ratio to reduce layout shifts.
-- Hero image should be prioritized; below-the-fold gallery can lazy load.
-- No autoplay video or WebGL/Three.js in V1.
+- Unified 4:3 aspect ratio across hero and dishes.
+- Use SVGs for placeholders during development; replace with optimized WebP/AVIF before launch.
+- Reserve image dimensions and aspect-ratio via CSS to eliminate layout shift (CLS < 0.1).
+- Hero image loaded eagerly (`loading="eager"`).
+- Below-the-fold gallery images lazy-loaded (`loading="lazy"`).
+- No autoplay video, no WebGL/Three.js.
 
 ## 8. Responsive QA widths
 
-Required: 320, 360, 390, 430, 768, 1024, 1280, 1440 CSS px.
+Required test viewports: **320, 360, 390, 430, 768, 1024, 1280, 1440 CSS px**.
 
-For each width verify: no horizontal overflow, no clipped nav, no text/price collision, no overlapping CTA, adequate contrast, visible focus and usable tap targets.
+For each width verify:
+1. No horizontal scrolling at any viewport.
+2. Sticky header remains functional and does not jump.
+3. Longest menu item wraps cleanly without colliding with prices.
+4. Mobile hero order matches: eyebrow → H1 → hours → primary call CTA → 4:3 image → secondary menu CTA.
+5. Mobile sticky dock triggers properly via IntersectionObserver and respects safe area.
+6. Touch targets meet minimum 44–48px.
+7. Text contrast meets WCAG AA across all text/background pairings.

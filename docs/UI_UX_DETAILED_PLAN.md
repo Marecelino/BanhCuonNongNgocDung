@@ -28,14 +28,20 @@ Optional conversion: tap the verified Zalo link once its destination is confirme
 | `--color-paper` | `#FFFFFF` | Menu panels/cards |
 | `--color-leaf` | `#315B45` | Primary brand/navigation |
 | `--color-leaf-dark` | `#244535` | Hover/pressed state |
-| `--color-shallot` | `#D5A13D` | Price highlights and small details |
-| `--color-chili` | `#A94332` | Secondary accent, used sparingly |
-| `--color-ink` | `#282A24` | Main text |
-| `--color-muted` | `#73756C` | Supporting text |
+| `--color-leaf-light` | `#E8F0EB` | Category header tint |
+| `--color-shallot` | `#D5A13D` | Decorative accent and small details only — **not for normal text on light backgrounds** (contrast ~2.4:1); use `--color-leaf` or `--color-ink` for price text |
+| `--color-chili` | `#A94332` | Primary CTA background — white text contrast ~4.8:1 ✅ AA |
+| `--color-chili-dark` | `#8B2F22` | CTA hover/pressed |
+| `--color-ink` | `#282A24` | Main text — contrast ~12.5:1 on rice ✅ AAA |
+| `--color-muted` | `#696960` | Supporting text — contrast ~5.1:1 on rice ✅ AA with margin |
 | `--color-border` | `#E8E2D5` | Dividers |
 
+> **Contrast note**: The original `#73756C` gives ~4.63:1 on `#FBF8F0` — passes WCAG AA but with minimal margin. `#696960` gives ~5.1:1, providing safer headroom for real-world display conditions and subpixel rendering variation.
+
+> **Shallot gold rule**: `--color-shallot #D5A13D` is a decorative accent only. Never use it as normal text color on `--color-rice` or `--color-paper` backgrounds (contrast ~2.4:1 fails WCAG AA). Price text must use `--color-ink` or `--color-leaf`.
+
 Typography proposal:
-- Main UI/body: Be Vietnam Pro (Vietnamese diacritics, reliable weights).
+- Main UI/body: **Be Vietnam Pro** — self-hosted in `public/fonts/` (SIL OFL license allows this). Do not use Google Fonts CDN — self-hosting keeps CSP simple and removes the external dependency.
 - Optional display accent: a restrained Vietnamese-supported display serif for a small number of headings; do not use it for price, menu descriptions or body copy.
 - Body default 16–18px; menu text should be at least 16px on mobile.
 
@@ -49,18 +55,18 @@ These are initial tokens. Validate contrast and visual feel in an actual prototy
 1. Open website from Google/social link.
 2. Recognize bánh cuốn/bún and see food photography.
 3. See menu and price quickly.
-4. Tap “Gọi đặt món”.
+4. Tap "Gọi đặt món".
 
 ### Journey B — customer wants to buy by kilogram
 1. Open menu section.
-2. Find “Bánh cuốn ký” or “Bánh ướt ký”.
+2. Find "Bánh cuốn ký" or "Bánh ướt ký".
 3. Read per-kilogram price.
 4. Tap call to confirm quantity and pickup.
 
 ### Journey C — first-time visitor wants to visit the shop
 1. See the brand name and breakfast category.
 2. Check opening time `05:00–10:30`.
-3. Tap “Chỉ đường” to open the owner-provided Google Maps link.
+3. Tap "Chỉ đường" to open the owner-provided Google Maps link.
 
 The days of operation and full postal address remain unknown. Do not infer them or print an address.
 
@@ -68,55 +74,61 @@ The days of operation and full postal address remain unknown. Do not infer them 
 
 1. Header / primary navigation.
 2. Hero / brand proposition / primary call-to-action.
-3. Quick menu preview (do not label items as best sellers without owner confirmation).
-4. Full menu with three groups.
-5. About / preparation story (verified facts only).
-6. Real food and shop gallery.
-7. Contact / opening hours / map and directions.
-8. Footer with phone and social links.
-9. Mobile fixed contact dock (optional; show only after checking it does not cover content).
+3. Full menu with three groups.
+4. Gallery (placeholder SVGs during development; real photos before launch).
+5. Contact / opening hours / map and directions.
+6. Footer with phone and links.
+7. Mobile fixed contact dock (IntersectionObserver-driven visibility).
+
+> **StorySection removed from V1**: Do not render an About/Story section until the owner supplies verified content. A restaurant website with a placeholder message ("Thông tin sắp cập nhật") is unprofessional and reduces trust. The section can be added in a future release when real content is available.
 
 ## 5. Section-by-section design plan
 
 ### 5.1 Header
 
+**Position: `sticky; top: 0` on both desktop and mobile.** Do not use `position: fixed`. Sticky keeps the header in document flow — no manual `padding-top` compensation is needed in the hero or any sibling section. Ensure `html` and `body` do not have `overflow: hidden` or `overflow: auto`, which would prevent sticky from working.
+
 Desktop:
 - Brand/logo left.
-- Anchor navigation: Thực đơn, Về quán, Hình ảnh, Liên hệ.
+- Anchor navigation: Thực đơn, Hình ảnh, Liên hệ.
 - A clear phone CTA aligned right.
 
 Mobile:
-- Compact brand mark/name and menu toggle or short anchor menu.
+- Compact brand mark/name left; hamburger/menu button right.
+- Hamburger button must have `aria-expanded`, `aria-controls`, keyboard operation (Enter/Space to open, Escape to close), and visible focus style.
 - Avoid a full desktop nav collapsed into a crowded row.
-- Place a compact call action in the header if it remains tappable.
+- Do not duplicate the phone CTA in the header when the mobile sticky dock already provides it.
 
 Use the confirmed text brand name **Bánh Cuốn Nóng Ngọc Dung** as a typographic wordmark. Official logo artwork is still pending.
 
 ### 5.2 Hero
 
-Desktop composition:
-- Two-column editorial layout: headline/copy/actions on one side, one dominant food-image placeholder during implementation, replaced by approved real photography before launch on the other.
-- Small eyebrow label such as “BỮA SÁNG VIỆT” (brand copy proposal, not a factual quality claim).
-- H1 communicates actual product category, e.g. “Bánh cuốn nóng & món ngon buổi sáng”.
-- Primary CTA: “Gọi đặt món — 0388 506 360”.
-- Secondary CTA: “Xem thực đơn”.
+**Hero image aspect ratio: 4:3 on both desktop and mobile.** Unifying the ratio simplifies asset management — the owner can supply one photograph per dish that works at both viewports.
 
-Mobile composition:
-- Reorder for a one-hand scan: identity → short headline → call action → food photo → jump-to-menu.
-- Crop hero image for vertical/square display; do not simply shrink desktop image.
-- Keep the phone CTA visible without scrolling where possible. Show the opening time range `05:00–10:30` near the first contact/menu decision point without implying days of operation.
+Desktop composition:
+- Two-column editorial layout (approximately 55/45): headline, eyebrow, opening hours and CTAs on the left; one dominant 4:3 food image placeholder on the right, replaced by approved real photography before launch.
+- Small eyebrow label such as "BỮA SÁNG VIỆT" (brand copy proposal, not a factual quality claim).
+- H1 communicates actual product category, e.g. "Bánh cuốn nóng & món ngon buổi sáng".
+- Primary CTA: "Gọi đặt món — 0388 506 360".
+- Secondary CTA: "Xem thực đơn".
+- **No `padding-top` needed on hero** because the sticky header does not remove content from document flow.
+
+Mobile composition — **deliberately reordered**, not a scaled-down desktop:
+
+1. Eyebrow label ("BỮA SÁNG VIỆT")
+2. H1 heading
+3. Opening hours (`Mở cửa: 05:00–10:30` — do not add days of operation)
+4. Primary CTA — full-width "Gọi đặt món — 0388 506 360" (minimum 48px height)
+5. Hero food image (4:3, full width)
+6. Secondary CTA — "Xem thực đơn ↓"
+
+Rationale: mobile visitors need to see the brand identity and call action before the food photograph. The image reinforces the product visually while the secondary CTA guides visitors who want to browse first.
 
 No autoplay video. A short muted video can be considered only after the real photo version passes performance checks and the owner has a useful authentic clip.
 
-### 5.3 Quick menu preview
+### 5.3 Full menu
 
-- Show a small preview of menu groups or 3–4 representative items selected for layout balance, not as a popularity ranking.
-- Do not label items “bán chạy”, “đặc biệt” or “món tủ” without owner confirmation.
-- Use concise rows/cards, prices obvious, one CTA to the full menu.
-
-### 5.4 Full menu
-
-Use real text, not image-only menu. Four hot dishes have no explicit serving unit in the supplied menu, so display their prices without adding “/ phần”. Three groups:
+Use real text, not image-only menu. Four hot dishes have no explicit serving unit in the supplied menu, so display their prices without adding "/ phần". Three groups:
 
 **Món nóng**
 - Bánh cuốn / Bánh ướt nóng — 30.000đ
@@ -134,6 +146,7 @@ Use real text, not image-only menu. Four hot dishes have no explicit serving uni
 Desktop:
 - Place category sections in a 2-column or balanced editorial layout; use one large food photo beside the menu when it supports scanability.
 - Keep price column aligned, not floating randomly.
+- Price text uses `--color-ink` (dark warm), not `--color-shallot` (gold accent fails contrast).
 
 Mobile:
 - Single column, full-width category groups.
@@ -141,31 +154,27 @@ Mobile:
 - Use thin dividers and generous row height instead of a grid of tiny cards.
 - Preserve exact units (`1 ký`, `1 miếng`).
 
-### 5.5 About / food preparation
-
-- Short story and 2–3 factual points only after the owner verifies them.
-- Potential content prompts: how the shop started, what customers commonly order, how the shop prepares dishes, what time service begins.
-- Do not state “tráng tại chỗ”, “nguyên liệu mỗi ngày”, “gia truyền”, “nước mắm độc quyền” unless confirmed.
-
-### 5.6 Gallery
+### 5.4 Gallery
 
 - During design and implementation, use the supplied abstract placeholder SVGs in `public/images/`; they are clearly labelled as temporary artwork, not real food photography.
+- Placeholder images must use `alt=""` (empty alt = decorative). Do NOT describe a placeholder as a real dish or use a dish name as alt text.
+- Mark each placeholder `<img>` with `data-placeholder="true"` to make them easy to find and replace.
 - Before production, replace placeholders with 4–6 owner-approved photos: bánh cuốn/bánh ướt, bún chả, bún mọc, shop front, and preparation if the owner wants to show it.
 - Keep lighting and background consistent.
-- Add descriptive Vietnamese alt text based on the actual image; decorative images use empty alt.
+- Add descriptive Vietnamese alt text based on the actual real image only after real photos are supplied.
 - Never use stock/generated images as if they depict the actual shop or its dishes.
 
-### 5.7 Contact / location
+### 5.5 Contact / location
 
 - Display phone `0388 506 360` and a large tap-to-call action.
-- Display opening time `05:00–10:30`; do not add “hằng ngày” because operating days are unknown.
-- Add a clear “Chỉ đường” action using the owner-provided URL `https://maps.app.goo.gl/RoiN2qYnvUcMYCFQ6`.
+- Display opening time `05:00–10:30`; do not add "hằng ngày" because operating days are unknown.
+- Add a clear "Chỉ đường" action using the owner-provided URL `https://maps.app.goo.gl/RoiN2qYnvUcMYCFQ6`.
 - Zalo action only after confirming that the number opens the intended shop account.
 - Facebook only after the real page URL is given.
 - Do not invent a street address. A map link may be shown without printing an unverified address.
 - On mobile, keep actions stacked or in a fixed bottom dock with safe-area padding.
 
-### 5.8 Footer
+### 5.6 Footer
 
 - Brand name, confirmed opening time range, phone, owner-provided Maps link, available verified social links, copyright.
 - No invented legal/company details.
@@ -173,18 +182,70 @@ Mobile:
 ## 6. Interaction specification
 
 - Anchor nav scrolls to the matching section with `scroll-margin-top` for sticky header.
-- “Gọi đặt món” is a real `tel:` anchor.
+- "Gọi đặt món" is a real `tel:` anchor.
 - Zalo/Facebook links open the exact verified destination; no dead placeholder buttons.
-- “Xem thực đơn” scrolls to menu.
+- "Xem thực đơn" scrolls to menu.
 - Do not simulate a cart or order confirmation if no order backend exists.
 - Focus, hover, active and disabled states must be designed; hover is enhancement, not the only feedback.
 - Honor reduced-motion preference.
 
-## 7. Responsive layout summary
+## 7. Mobile Contact Dock — IntersectionObserver behavior
+
+The mobile sticky contact dock uses **IntersectionObserver** (native browser API, no dependency) to control visibility:
+
+| Visitor location | Dock state | Reason |
+|---|---|---|
+| HeroSection is in viewport | Hidden | Hero already has call CTA visible |
+| Scrolled past HeroSection | Visible | Visitor needs persistent contact access |
+| ContactSection is in viewport | Hidden | Contact section already shows all actions |
+| Returned to HeroSection | Hidden | Hero CTA visible again |
+
+Implementation details:
+- Observe `HeroSection` root element with `threshold: 0` (hide dock as soon as hero starts to leave viewport).
+- Observe `ContactSection` root element with `threshold: 0.1` (hide dock when 10% of contact is visible).
+- Use `useState` for dock visibility, `useRef` for observed elements, `useEffect` for observer setup/teardown in `ContactDock.jsx`.
+- Dock contains two buttons: "Gọi đặt món" (`tel:0388506360`) and "Chỉ đường" (Maps link). Do not add Zalo until verified.
+- `padding-bottom` on `<main>` = dock height + `env(safe-area-inset-bottom)`.
+- Dock has `box-shadow: 0 -4px 16px rgba(40,42,36,0.12)` to separate from content.
+- Dock only renders on viewports < 768px.
+
+## 8. Responsive layout summary
 
 See `RESPONSIVE_SPEC.md` for detailed viewport behavior. Critical principle: change composition and prioritization, not only CSS widths.
 
-## 8. Content and asset dependencies before final launch
+## 9. SEO and metadata
+
+```html
+<html lang="vi">
+<head>
+  <title>Bánh Cuốn Nóng Ngọc Dung — Mở cửa 05:00–10:30</title>
+  <meta name="description" content="Bánh cuốn, bánh ướt nóng, bún chả Hà Nội, bún mọc từ 30.000đ. Đặt món: 0388 506 360. Mở cửa 05:00–10:30." />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Bánh Cuốn Nóng Ngọc Dung" />
+  <meta property="og:description" content="Bánh cuốn, bánh ướt nóng và bún ngon buổi sáng. Gọi đặt: 0388 506 360." />
+  <meta property="og:locale" content="vi_VN" />
+  <!-- og:image: add after real food photography is supplied -->
+  <!-- canonical: add after real domain is confirmed -->
+</head>
+```
+
+> **og:type must be "website"** — `restaurant` is not a valid Open Graph type. Restaurant-specific structured data belongs in JSON-LD (`@type: "Restaurant"`), not og:type.
+
+JSON-LD Restaurant structured data: include only verified fields. Do not invent `address`, `openingDays`, `servesCuisine` claims, reviews, or social URLs.
+
+## 10. Font strategy
+
+**Decision: Self-host Be Vietnam Pro.** Be Vietnam Pro is released under SIL Open Font License 1.1 which explicitly allows self-hosting.
+
+Action items before Phase 1 coding:
+1. Download Be Vietnam Pro font files (weights 400, 500, 600, 700, 800) from Google Fonts or the GitHub source.
+2. Place WOFF2 files in `public/fonts/`.
+3. Declare `@font-face` rules in `src/styles/tokens.css` or `src/styles/global.css`.
+4. Update CSP `font-src` to `'self'` only — no Google Fonts CDN sources required.
+
+This eliminates the external Google Fonts CDN request and simplifies the Content Security Policy.
+
+## 11. Content and asset dependencies before final launch
 
 Confirmed and ready to use:
 - Brand name: Bánh Cuốn Nóng Ngọc Dung.
@@ -200,8 +261,9 @@ Still required before final production release:
 - Days of operation.
 - Correct Facebook URL and confirmed Zalo destination.
 - Owner confirmation that every price is current.
+- Be Vietnam Pro WOFF2 font files for self-hosting (OFL license permits this).
 
-## 9. Design and implementation gates
+## 12. Design and implementation gates
 
 Gate 1 — Plan: approve sitemap, content order, design direction, color/type tokens, desktop/mobile wireframes.
 Gate 2 — Visual prototype: approve hero/menu/contact desktop and phone layouts using the real content and real photos if available.
