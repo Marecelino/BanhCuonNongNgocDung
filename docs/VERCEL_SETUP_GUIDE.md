@@ -127,3 +127,4 @@ A: Vercel gửi email thông báo khi build lỗi. Vào tab **Deployments** → 
 
 **Q: Có thể dùng nhiều tên miền không?**  
 A: Có. Vercel cho phép thêm nhiều tên miền cho một project. Ví dụ cả `banhcuonngocdung.vn` và `www.banhcuonngocdung.vn`.
+

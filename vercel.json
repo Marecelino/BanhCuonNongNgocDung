@@ -28,8 +28,9 @@
   ],
   "rewrites": [
     {
-      "source": "/((?!assets|images|icons|fonts|favicon.ico).*)",
+      "source": "/((?!assets|images|icons|fonts|favicon|robots|google).*)",
       "destination": "/index.html"
     }
   ]
 }
+

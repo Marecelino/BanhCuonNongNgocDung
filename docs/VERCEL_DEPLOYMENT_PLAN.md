@@ -185,3 +185,4 @@ Vercel keeps all past deployments permanently — rollback is instant, no code c
 
 > [!WARNING]
 > Large PNG source files are committed to the repository (`Bánh cuốn.png` = 7.65 MB, `Bún mọc sườn non.png` = 7.88 MB, etc.). These inflate the Git repository and Vercel build cache. The optimized WebP files are used in production; the PNGs are PNG fallbacks or originals. Consider using Git LFS for large binary assets in future projects.
+

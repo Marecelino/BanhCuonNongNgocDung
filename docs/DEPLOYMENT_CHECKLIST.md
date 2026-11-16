@@ -124,3 +124,4 @@
 - [ ] Check website after first 24 hours for any broken links or missing images
 - [ ] Verify Vercel auto-deploys are working (push a minor change and confirm it goes live)
 - [ ] Review Vercel Analytics (if enabled) for traffic patterns
+
