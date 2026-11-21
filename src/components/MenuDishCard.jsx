@@ -5,6 +5,7 @@ export function MenuDishCard({ item }) {
     name,
     price,
     unit,
+    badge,
     image,
     imageThumb,
     imageFallback,
@@ -42,6 +43,11 @@ export function MenuDishCard({ item }) {
             style={{ objectPosition: imagePosition }}
           />
         </picture>
+        {badge && (
+          <span className="menu-dish-card__badge-tag">
+            {badge}
+          </span>
+        )}
         {isPlaceholder && (
           <span
             className="menu-dish-card__badge-status"
