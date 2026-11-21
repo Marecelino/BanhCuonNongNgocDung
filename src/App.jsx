@@ -6,6 +6,7 @@ import { GallerySection } from './sections/GallerySection';
 import { ContactSection } from './sections/ContactSection';
 import { ContactDock } from './sections/ContactDock';
 import { FloatingZalo } from './components/FloatingZalo';
+import { ScrollToTop } from './components/ScrollToTop';
 import { SiteFooter } from './sections/SiteFooter';
 
 export default function App() {
@@ -63,6 +64,7 @@ export default function App() {
       <SiteFooter />
       <ContactDock isVisible={isDockVisible} heroRef={heroRef} contactRef={contactRef} />
       <FloatingZalo isDockVisible={isDockVisible} />
+      <ScrollToTop isDockVisible={isDockVisible} />
     </>
   );
 }
