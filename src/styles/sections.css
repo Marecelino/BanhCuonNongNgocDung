@@ -1106,3 +1106,192 @@
     padding-bottom: calc(var(--dock-height) + env(safe-area-inset-bottom, 0px));
   }
 }
+
+/* ============================================================
+   HERO PLATE SHOWCASE (INTERACTIVE ROTATING DISH SHOWCASE)
+   ============================================================ */
+.hero-showcase {
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden; /* Ngăn chặn triệt để lỗi cuộn ngang mobile */
+  border-radius: var(--radius-2xl, 24px);
+  padding: 1.5rem 0.75rem 1rem;
+  background-color: var(--color-paper);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-sm);
+}
+
+.hero-showcase__curved-bg {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100%;
+  height: 82%;
+  background: radial-gradient(circle at top right, var(--color-leaf-light) 0%, var(--color-rice) 75%);
+  border-bottom-left-radius: 120px;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.hero-showcase__stage {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+/* Bóng đổ tĩnh đặt dưới đĩa, không quay theo đĩa */
+.hero-showcase__shadow {
+  position: absolute;
+  top: 215px;
+  width: 210px;
+  height: 24px;
+  background: radial-gradient(ellipse at center, rgba(40, 42, 36, 0.32) 0%, transparent 72%);
+  border-radius: 50%;
+  z-index: 1;
+  pointer-events: none;
+}
+
+@media (min-width: 768px) {
+  .hero-showcase__shadow {
+    top: 295px;
+    width: 280px;
+    height: 32px;
+  }
+}
+
+/* Khung đĩa tròn hoàn hảo tỷ lệ 1:1 */
+.hero-showcase__plate {
+  position: relative;
+  width: 230px;
+  height: 230px;
+  border-radius: 50%;
+  background-color: var(--color-paper);
+  box-shadow: 0 10px 30px rgba(40, 42, 36, 0.15);
+  z-index: 2;
+  overflow: hidden;
+}
+
+@media (min-width: 768px) {
+  .hero-showcase__plate {
+    width: 310px;
+    height: 310px;
+  }
+}
+
+.hero-showcase__rim {
+  position: absolute;
+  inset: 4px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.88);
+  box-shadow: inset 0 0 12px rgba(0, 0, 0, 0.08);
+  pointer-events: none;
+  z-index: 3;
+}
+
+.hero-showcase__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+/* Thông tin món ăn & Giá chuẩn tương phản WCAG */
+.hero-showcase__info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  margin-top: 1.25rem;
+  z-index: 2;
+  text-align: center;
+  min-height: 60px;
+}
+
+.hero-showcase__dish-name {
+  font-size: var(--text-base);
+  font-weight: 700;
+  color: var(--clr-text);
+  margin: 0;
+  line-height: var(--leading-snug);
+  max-width: 280px;
+}
+
+@media (min-width: 768px) {
+  .hero-showcase__dish-name {
+    font-size: var(--text-lg);
+    max-width: 340px;
+  }
+}
+
+.hero-showcase__dish-price {
+  font-size: var(--text-base);
+  font-weight: 700;
+  color: var(--color-leaf-dark); /* Đạt chuẩn tương phản 4.5:1+ */
+  background: var(--color-paper);
+  border: 1px solid var(--color-border);
+  padding: 0.2rem 0.85rem;
+  border-radius: 99px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+/* Thumbnail Carousel cho 4 món nóng */
+.hero-showcase__carousel {
+  display: flex;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-top: 1rem;
+  padding: 0.25rem;
+  z-index: 2;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  max-width: 100%;
+  scrollbar-width: none;
+}
+
+.hero-showcase__carousel::-webkit-scrollbar {
+  display: none;
+}
+
+.hero-showcase__thumb {
+  scroll-snap-align: center;
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  padding: 0;
+  cursor: pointer;
+  background: var(--color-paper);
+  opacity: 0.65;
+  transition: opacity 0.25s ease, transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+@media (min-width: 768px) {
+  .hero-showcase__thumb {
+    width: 64px;
+    height: 64px;
+  }
+}
+
+.hero-showcase__thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hero-showcase__thumb.is-active {
+  opacity: 1;
+  border-color: var(--clr-brand);
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(49, 91, 69, 0.25);
+}
+

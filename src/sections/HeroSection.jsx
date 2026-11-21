@@ -1,6 +1,7 @@
 import { Container } from '../components/Container';
 import { ButtonLink } from '../components/ButtonLink';
 import { restaurant } from '../data/restaurant';
+import { HeroPlateShowcase } from '../components/HeroPlateShowcase';
 
 export function HeroSection({ heroRef }) {
   return (
@@ -51,22 +52,11 @@ export function HeroSection({ heroRef }) {
           </div>
         </div>
 
-        {/* Right Column (Desktop) / Image (Mobile) */}
+        {/* Right Column (Desktop) / Interactive Plate Showcase (Mobile) */}
         <div className="hero-section__media">
-          <div className="hero-section__image-frame">
-            <img
-              src={restaurant.images.hero}
-              alt=""
-              width="600"
-              height="450"
-              loading="eager"
-              decoding="async"
-              data-placeholder="true"
-              className="hero-section__image"
-            />
-          </div>
+          <HeroPlateShowcase />
 
-          {/* 6. Mobile Secondary CTA (placed right below the image) */}
+          {/* 6. Mobile Secondary CTA (placed right below the showcase) */}
           <div className="hero-section__cta-mobile-secondary">
             <ButtonLink href="#thuc-don" variant="secondary" size="md" className="btn--full">
               Xem thực đơn ↓
